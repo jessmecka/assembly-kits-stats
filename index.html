@@ -7,141 +7,111 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; color: #1a1a18; font-size: 13px; }
-
   .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
-
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
   .subtitle { font-size: 12px; color: #888780; margin-bottom: 2rem; }
-
-  /* Summary cards */
-  .cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2.5rem; }
+  .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 2.5rem; }
   .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 10px; padding: 14px 16px; }
   .card .val { font-size: 22px; font-weight: 500; margin-bottom: 3px; }
   .card .lbl { font-size: 11px; color: #888780; }
-
-  /* Section headers */
+  .card.warn .val { color: #854F0B; }
   .section { margin-bottom: 2.5rem; }
   .section-title { font-size: 12px; font-weight: 500; color: #5f5e5a; text-transform: uppercase; letter-spacing: .05em; padding-bottom: 8px; border-bottom: 0.5px solid #d3d1c7; margin-bottom: 0; display: flex; align-items: center; gap: 8px; }
   .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
   .dot-red { background: #E24B4A; }
   .dot-amber { background: #BA7517; }
-  .dot-green { background: #639922; }
   .dot-teal { background: #1D9E75; }
-
-  /* Controls */
-  .controls { display: flex; gap: 10px; align-items: center; padding: 10px 0; flex-wrap: wrap; }
+  .controls { display: flex; gap: 10px; align-items: center; padding: 10px 0 12px; flex-wrap: wrap; }
   .controls label { font-size: 11px; color: #888780; }
   select { font-size: 12px; padding: 5px 8px; border: 0.5px solid #b4b2a9; border-radius: 6px; background: #fff; color: #1a1a18; cursor: pointer; }
   select:hover { border-color: #888780; }
-
-  /* Tables */
   table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; font-weight: 500; color: #888780; text-align: left; padding: 8px 10px; border-bottom: 0.5px solid #d3d1c7; white-space: nowrap; }
+  th { font-size: 11px; font-weight: 500; color: #888780; text-align: left; padding: 8px 10px; border-bottom: 0.5px solid #d3d1c7; white-space: nowrap; cursor: pointer; user-select: none; }
+  th:hover { color: #1a1a18; }
   th.num { text-align: right; }
   td { padding: 8px 10px; border-bottom: 0.5px solid #ebebea; font-size: 12.5px; }
   td.num { text-align: right; font-variant-numeric: tabular-nums; }
   td.muted { color: #888780; }
   tr:hover td { background: #f9f8f5; }
-
-  /* Progress bar */
   .bar-wrap { display: flex; align-items: center; gap: 8px; }
-  .bar-bg { flex: 1; height: 5px; background: #ebebea; border-radius: 3px; overflow: hidden; }
+  .bar-bg { flex: 1; height: 5px; background: #ebebea; border-radius: 3px; overflow: hidden; min-width: 60px; }
   .bar-fill { height: 100%; border-radius: 3px; }
-
-  /* Badges */
   .badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
-  .b-done   { background: #EAF3DE; color: #3B6D11; }
-  .b-close  { background: #FAEEDA; color: #854F0B; }
-  .b-going  { background: #FAECE7; color: #993C1D; }
-  .b-none   { background: #f1efe8; color: #5f5e5a; }
-  .b-watch  { background: #FAEEDA; color: #854F0B; }
-  .b-teal   { background: #E1F5EE; color: #0F6E56; }
-
+  .b-done  { background: #EAF3DE; color: #3B6D11; }
+  .b-close { background: #FAEEDA; color: #854F0B; }
+  .b-going { background: #FAECE7; color: #993C1D; }
+  .b-none  { background: #f1efe8; color: #5f5e5a; }
+  .b-watch { background: #FAEEDA; color: #854F0B; }
+  .b-teal  { background: #E1F5EE; color: #0F6E56; }
   .num-big { font-weight: 500; font-size: 13px; }
   .needs-high { color: #A32D2D; }
   .needs-mid  { color: #854F0B; }
   .needs-low  { color: #3B6D11; }
-
-  /* Tab nav */
+  .rej-high { color: #A32D2D; font-weight: 500; }
+  .rej-mid  { color: #854F0B; }
   .tabs { display: flex; gap: 2px; margin-bottom: 1.5rem; border-bottom: 0.5px solid #d3d1c7; }
   .tab { padding: 8px 16px; font-size: 12px; font-weight: 500; cursor: pointer; border-bottom: 2px solid transparent; color: #888780; margin-bottom: -0.5px; }
   .tab.active { color: #1a1a18; border-bottom-color: #1a1a18; }
   .tab:hover { color: #1a1a18; }
   .tab-panel { display: none; }
   .tab-panel.active { display: block; }
-
   .note { font-size: 11px; color: #888780; margin-top: 10px; padding: 8px 12px; background: #f9f8f5; border-radius: 6px; border-left: 2px solid #d3d1c7; }
-
-  @media (max-width: 700px) {
-    .cards { grid-template-columns: repeat(2, 1fr); }
-  }
+  .updated { font-size: 11px; color: #888780; margin-top: 1.5rem; text-align: right; }
+  @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } }
 </style>
 </head>
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of May 24, 2026</p>
-
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of May 25, 2026</p>
   <div class="cards" id="summary-cards"></div>
-
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('recordings')">Recordings needed</div>
-    <div class="tab" onclick="switchTab('breakdown')">Full breakdown</div>
+    <div class="tab active" onclick="switchTab('recordings', this)">Recordings needed</div>
+    <div class="tab" onclick="switchTab('breakdown', this)">Full breakdown</div>
   </div>
-
-  <!-- TAB 1: Recordings needed -->
   <div class="tab-panel active" id="tab-recordings">
-
     <div class="section">
-      <div class="section-title"><span class="dot dot-red"></span> Needs new recordings</div>
-      <table id="tbl-urgent">
-        <thead><tr>
-          <th style="width:36%">Task</th>
-          <th class="num" style="width:12%">Approved</th>
-          <th class="num" style="width:10%">Gap</th>
-          <th class="num" style="width:16%">Pending review</th>
-          <th class="num" style="width:26%">New recordings to schedule</th>
-        </tr></thead>
-        <tbody id="body-urgent"></tbody>
-      </table>
+      <div class="section-title"><span class="dot dot-red"></span>Needs new recordings</div>
+      <table><thead><tr>
+        <th style="width:35%">Task</th>
+        <th class="num" style="width:11%">Approved</th>
+        <th class="num" style="width:10%">Gap to 100</th>
+        <th class="num" style="width:14%">Pending review</th>
+        <th class="num" style="width:10%">Rejected</th>
+        <th class="num" style="width:10%">Rej %</th>
+        <th class="num" style="width:20%">New recordings needed</th>
+      </tr></thead><tbody id="body-urgent"></tbody></table>
     </div>
-
     <div class="section">
-      <div class="section-title"><span class="dot dot-amber"></span> Pending review may close the gap — monitor before scheduling</div>
-      <table id="tbl-watch">
-        <thead><tr>
-          <th style="width:36%">Task</th>
-          <th class="num" style="width:12%">Approved</th>
-          <th class="num" style="width:10%">Gap</th>
-          <th class="num" style="width:16%">Pending review</th>
-          <th class="num" style="width:26%">Status</th>
-        </tr></thead>
-        <tbody id="body-watch"></tbody>
-      </table>
-      <p class="note">⚠ Some tasks above have high rejection rates (e.g. zozoplay gear set: 50% rejection). Factor in expected rejections when deciding whether to schedule additional recordings.</p>
+      <div class="section-title"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
+      <table><thead><tr>
+        <th style="width:35%">Task</th>
+        <th class="num" style="width:11%">Approved</th>
+        <th class="num" style="width:10%">Gap to 100</th>
+        <th class="num" style="width:14%">Pending review</th>
+        <th class="num" style="width:10%">Rejected</th>
+        <th class="num" style="width:10%">Rej %</th>
+        <th class="num" style="width:20%">Status</th>
+      </tr></thead><tbody id="body-watch"></tbody></table>
+      <p class="note">⚠ Rejection rate varies by task — factor in expected rejections when deciding whether to schedule extra recordings.</p>
     </div>
-
     <div class="section">
-      <div class="section-title"><span class="dot dot-teal"></span> Target met</div>
-      <table>
-        <thead><tr>
-          <th style="width:50%">Task</th>
-          <th class="num">Approved demos</th>
-          <th class="num">Status</th>
-        </tr></thead>
-        <tbody id="body-done"></tbody>
-      </table>
+      <div class="section-title"><span class="dot dot-teal"></span>Target met</div>
+      <table><thead><tr>
+        <th style="width:50%">Task</th>
+        <th class="num">Approved demos</th>
+        <th class="num">Rejection rate</th>
+        <th class="num">Status</th>
+      </tr></thead><tbody id="body-done"></tbody></table>
     </div>
-
   </div>
-
-  <!-- TAB 2: Full breakdown -->
   <div class="tab-panel" id="tab-breakdown">
     <div class="controls">
       <label>Sort by</label>
       <select id="sortSel" onchange="renderBreakdown()">
         <option value="approved">Approved demos ↓</option>
         <option value="needed">Gap to 100 ↓</option>
+        <option value="rejpct">Rejection rate ↓</option>
         <option value="hpd">Hours per demo ↓</option>
         <option value="name">Task name A–Z</option>
       </select>
@@ -153,186 +123,149 @@
         <option value="none">No approved demos yet</option>
       </select>
     </div>
-    <table>
-      <thead><tr>
-        <th style="width:30%">Task</th>
-        <th class="num" style="width:12%">Approved</th>
-        <th class="num" style="width:12%">Approved hrs</th>
-        <th class="num" style="width:12%">Hrs / demo</th>
-        <th class="num" style="width:10%">Pending</th>
-        <th class="num" style="width:10%">Rejected</th>
-        <th style="width:14%">Progress to 100</th>
-      </tr></thead>
-      <tbody id="body-breakdown"></tbody>
-    </table>
+    <table><thead><tr>
+      <th style="width:26%">Task</th>
+      <th class="num" style="width:10%">Approved</th>
+      <th class="num" style="width:11%">Approved hrs</th>
+      <th class="num" style="width:10%">Hrs / demo</th>
+      <th class="num" style="width:9%">Pending</th>
+      <th class="num" style="width:9%">Rejected</th>
+      <th class="num" style="width:9%">Rej %</th>
+      <th style="width:16%">Progress to 100</th>
+    </tr></thead><tbody id="body-breakdown"></tbody></table>
   </div>
-
+  <p class="updated">Last updated: May 25, 2026 · Source: mecka-ai MongoDB</p>
 </div>
-
 <script>
-const tasks = [
-  {id:"assemble_3in1_animals_on_wheels",      approved:104, approvedSecs:255945, pending:0,  rejected:29},
-  {id:"assemble_3in1_dinosaurs_on_wheels",    approved:0,   approvedSecs:0,      pending:1,  rejected:0},
-  {id:"assemble_aolew_erector_set",           approved:50,  approvedSecs:138975, pending:1,  rejected:83},
-  {id:"assemble_apluses_magnetic_blocks",     approved:0,   approvedSecs:0,      pending:45, rejected:0},
-  {id:"assemble_battat_toy_plane",            approved:37,  approvedSecs:106563, pending:0,  rejected:29},
-  {id:"assemble_bluey_family_house",          approved:68,  approvedSecs:172785, pending:1,  rejected:11},
-  {id:"assemble_bracelet_kit",                approved:14,  approvedSecs:37175,  pending:32, rejected:17},
-  {id:"assemble_btoys_oven",                  approved:0,   approvedSecs:0,      pending:54, rejected:0},
-  {id:"assemble_cars_3_mcqueen_kit",          approved:43,  approvedSecs:113477, pending:33, rejected:4},
-  {id:"assemble_coogam_racing_car",           approved:46,  approvedSecs:113182, pending:0,  rejected:26},
-  {id:"assemble_dekilea_gear_blocks",         approved:0,   approvedSecs:0,      pending:52, rejected:0},
-  {id:"assemble_design_gears_workshop",       approved:0,   approvedSecs:0,      pending:48, rejected:0},
-  {id:"assemble_design_robot",                approved:43,  approvedSecs:127565, pending:0,  rejected:27},
-  {id:"assemble_dinosaur_toy",                approved:0,   approvedSecs:0,      pending:55, rejected:0},
-  {id:"assemble_disney_cars_copper_canyon",   approved:32,  approvedSecs:70403,  pending:38, rejected:6},
-  {id:"assemble_fire_truck",                  approved:55,  approvedSecs:138018, pending:0,  rejected:26},
-  {id:"assemble_fyd_jeep",                    approved:0,   approvedSecs:0,      pending:48, rejected:0},
-  {id:"assemble_gigglescape_construction_set",approved:0,   approvedSecs:0,      pending:7,  rejected:0},
-  {id:"assemble_hape_drive_car",              approved:40,  approvedSecs:98827,  pending:51, rejected:6},
-  {id:"assemble_haptime_design_set",          approved:0,   approvedSecs:0,      pending:47, rejected:0},
-  {id:"assemble_iiromeci_gears",              approved:0,   approvedSecs:0,      pending:0,  rejected:1},
-  {id:"assemble_kids_first_robot_factory",    approved:0,   approvedSecs:0,      pending:84, rejected:0},
-  {id:"assemble_lacchoufee_tool_box_1",       approved:59,  approvedSecs:175054, pending:44, rejected:24},
-  {id:"assemble_lacchoufee_tool_box_2",       approved:9,   approvedSecs:27306,  pending:18, rejected:10},
-  {id:"assemble_laugh_learn_coffee_cafe",     approved:14,  approvedSecs:39570,  pending:16, rejected:25},
-  {id:"assemble_lego_angel_stitch_brick_headz",approved:54, approvedSecs:148030, pending:3,  rejected:72},
-  {id:"assemble_lego_duplo_cake",             approved:54,  approvedSecs:144670, pending:0,  rejected:16},
-  {id:"assemble_lego_duplo_garden",           approved:71,  approvedSecs:188284, pending:0,  rejected:38},
-  {id:"assemble_lego_jet_vs_car",             approved:93,  approvedSecs:248818, pending:0,  rejected:67},
-  {id:"assemble_lego_road_plates",            approved:0,   approvedSecs:0,      pending:40, rejected:0},
-  {id:"assemble_lego_year_of_horse",          approved:68,  approvedSecs:205418, pending:0,  rejected:65},
-  {id:"assemble_little_tikes_hammer_nail",    approved:27,  approvedSecs:76611,  pending:28, rejected:4},
-  {id:"assemble_little_tikes_measure_cut",    approved:22,  approvedSecs:55609,  pending:33, rejected:24},
-  {id:"assemble_magna_tiles_puppy_park",      approved:56,  approvedSecs:140319, pending:0,  rejected:33},
-  {id:"assemble_magnetic_train_track",        approved:0,   approvedSecs:0,      pending:51, rejected:0},
-  {id:"assemble_marble_run",                  approved:0,   approvedSecs:0,      pending:90, rejected:0},
-  {id:"assemble_melissa_doug_sandwich_counter",approved:33, approvedSecs:91419,  pending:23, rejected:10},
-  {id:"assemble_montessori_tool_bench",       approved:4,   approvedSecs:10424,  pending:0,  rejected:2},
-  {id:"assemble_motor_works_vehicles",        approved:27,  approvedSecs:72368,  pending:36, rejected:16},
-  {id:"assemble_mould_king_v8_kit",           approved:25,  approvedSecs:62313,  pending:88, rejected:23},
-  {id:"assemble_mould_king_v8_model",         approved:0,   approvedSecs:0,      pending:111,rejected:0},
-  {id:"assemble_ooze_labs_chemistry",         approved:33,  approvedSecs:83037,  pending:31, rejected:7},
-  {id:"assemble_play_dinos",                  approved:24,  approvedSecs:70279,  pending:38, rejected:12},
-  {id:"assemble_pup_go_car",                  approved:70,  approvedSecs:198519, pending:0,  rejected:32},
-  {id:"assemble_remote_control_gear_bot",     approved:27,  approvedSecs:71285,  pending:35, rejected:16},
-  {id:"assemble_retro_car",                   approved:87,  approvedSecs:233126, pending:2,  rejected:70},
-  {id:"assemble_tonze_kids_tool_bench",       approved:68,  approvedSecs:194972, pending:0,  rejected:27},
-  {id:"assemble_veais_kids_set",              approved:0,   approvedSecs:0,      pending:71, rejected:0},
-  {id:"assemble_vtech_drill_toolbox",         approved:12,  approvedSecs:28199,  pending:45, rejected:14},
-  {id:"assemble_wonder_tiles_city",           approved:34,  approvedSecs:89031,  pending:41, rejected:14},
-  {id:"assemble_wooden_train_set",            approved:15,  approvedSecs:38627,  pending:78, rejected:25},
-  {id:"assemble_zozoplay_gear_set",           approved:92,  approvedSecs:245269, pending:1,  rejected:92},
+const rawTasks = [
+  {id:"assemble_3in1_animals_on_wheels",approved:104,approvedSecs:255945,pending:0,rejected:29},
+  {id:"assemble_3in1_dinosaurs_on_wheels",approved:0,approvedSecs:0,pending:1,rejected:0},
+  {id:"assemble_aolew_erector_set",approved:50,approvedSecs:138975,pending:4,rejected:84},
+  {id:"assemble_apluses_magnetic_blocks",approved:0,approvedSecs:0,pending:48,rejected:0},
+  {id:"assemble_battat_toy_plane",approved:37,approvedSecs:106563,pending:3,rejected:29},
+  {id:"assemble_bluey_family_house",approved:68,approvedSecs:172785,pending:0,rejected:12},
+  {id:"assemble_bracelet_kit",approved:14,approvedSecs:37175,pending:41,rejected:19},
+  {id:"assemble_btoys_oven",approved:0,approvedSecs:0,pending:57,rejected:0},
+  {id:"assemble_cars_3_mcqueen_kit",approved:44,approvedSecs:117212,pending:39,rejected:5},
+  {id:"assemble_coogam_racing_car",approved:46,approvedSecs:113182,pending:0,rejected:26},
+  {id:"assemble_dekilea_gear_blocks",approved:0,approvedSecs:0,pending:76,rejected:0},
+  {id:"assemble_design_gears_workshop",approved:0,approvedSecs:0,pending:49,rejected:0},
+  {id:"assemble_design_robot",approved:43,approvedSecs:127565,pending:3,rejected:27},
+  {id:"assemble_dinosaur_toy",approved:0,approvedSecs:0,pending:56,rejected:0},
+  {id:"assemble_disney_cars_copper_canyon",approved:33,approvedSecs:72139,pending:45,rejected:6},
+  {id:"assemble_fire_truck",approved:55,approvedSecs:138018,pending:4,rejected:26},
+  {id:"assemble_fyd_jeep",approved:0,approvedSecs:0,pending:49,rejected:0},
+  {id:"assemble_gigglescape_construction_set",approved:0,approvedSecs:0,pending:7,rejected:0},
+  {id:"assemble_hape_drive_car",approved:41,approvedSecs:101553,pending:57,rejected:7},
+  {id:"assemble_haptime_design_set",approved:0,approvedSecs:0,pending:50,rejected:0},
+  {id:"assemble_iiromeci_gears",approved:0,approvedSecs:0,pending:0,rejected:1},
+  {id:"assemble_kids_first_robot_factory",approved:0,approvedSecs:0,pending:100,rejected:0},
+  {id:"assemble_lacchoufee_tool_box_1",approved:59,approvedSecs:175054,pending:74,rejected:24},
+  {id:"assemble_lacchoufee_tool_box_2",approved:9,approvedSecs:27306,pending:22,rejected:10},
+  {id:"assemble_laugh_learn_coffee_cafe",approved:14,approvedSecs:39570,pending:26,rejected:26},
+  {id:"assemble_lego_angel_stitch_brick_headz",approved:54,approvedSecs:148030,pending:28,rejected:72},
+  {id:"assemble_lego_duplo_cake",approved:54,approvedSecs:144670,pending:0,rejected:16},
+  {id:"assemble_lego_duplo_garden",approved:71,approvedSecs:188284,pending:0,rejected:38},
+  {id:"assemble_lego_jet_vs_car",approved:93,approvedSecs:248818,pending:0,rejected:67},
+  {id:"assemble_lego_road_plates",approved:0,approvedSecs:0,pending:43,rejected:0},
+  {id:"assemble_lego_year_of_horse",approved:68,approvedSecs:205418,pending:9,rejected:65},
+  {id:"assemble_little_tikes_hammer_nail",approved:28,approvedSecs:79261,pending:38,rejected:4},
+  {id:"assemble_little_tikes_measure_cut",approved:23,approvedSecs:59176,pending:44,rejected:25},
+  {id:"assemble_magna_tiles_puppy_park",approved:56,approvedSecs:140319,pending:0,rejected:33},
+  {id:"assemble_magnetic_train_track",approved:0,approvedSecs:0,pending:60,rejected:0},
+  {id:"assemble_marble_run",approved:0,approvedSecs:0,pending:111,rejected:0},
+  {id:"assemble_melissa_doug_sandwich_counter",approved:35,approvedSecs:96121,pending:30,rejected:10},
+  {id:"assemble_montessori_tool_bench",approved:4,approvedSecs:10424,pending:0,rejected:2},
+  {id:"assemble_motor_works_vehicles",approved:27,approvedSecs:72368,pending:45,rejected:19},
+  {id:"assemble_mould_king_v8_kit",approved:25,approvedSecs:62313,pending:104,rejected:24},
+  {id:"assemble_mould_king_v8_model",approved:0,approvedSecs:0,pending:132,rejected:0},
+  {id:"assemble_ooze_labs_chemistry",approved:34,approvedSecs:84022,pending:31,rejected:7},
+  {id:"assemble_play_dinos",approved:24,approvedSecs:70279,pending:40,rejected:13},
+  {id:"assemble_pup_go_car",approved:70,approvedSecs:198519,pending:0,rejected:32},
+  {id:"assemble_remote_control_gear_bot",approved:28,approvedSecs:75025,pending:56,rejected:16},
+  {id:"assemble_retro_car",approved:88,approvedSecs:234356,pending:1,rejected:70},
+  {id:"assemble_tonze_kids_tool_bench",approved:68,approvedSecs:194972,pending:0,rejected:27},
+  {id:"assemble_veais_kids_set",approved:0,approvedSecs:0,pending:92,rejected:0},
+  {id:"assemble_vtech_drill_toolbox",approved:12,approvedSecs:28199,pending:54,rejected:15},
+  {id:"assemble_wonder_tiles_city",approved:34,approvedSecs:89031,pending:43,rejected:14},
+  {id:"assemble_wooden_train_set",approved:16,approvedSecs:42011,pending:91,rejected:26},
+  {id:"assemble_zozoplay_gear_set",approved:92,approvedSecs:245269,pending:1,rejected:92},
 ];
-
-const TARGET = 100;
-const data = tasks.map(t => {
-  const gap = Math.max(0, TARGET - t.approved);
-  const newNeeded = Math.max(0, gap - t.pending);
-  const approvedHrs = t.approvedSecs / 3600;
-  const hpd = t.approved > 0 ? approvedHrs / t.approved : null;
-  const label = t.id.replace('assemble_','').replace(/_/g,' ');
-  return { ...t, gap, newNeeded, approvedHrs, hpd, label };
+const TARGET=100;
+const data=rawTasks.map(t=>{
+  const label=t.id.replace('assemble_','').replace(/_/g,' ');
+  const gap=Math.max(0,TARGET-t.approved);
+  const newNeeded=Math.max(0,gap-t.pending);
+  const approvedHrs=t.approvedSecs/3600;
+  const hpd=t.approved>0?approvedHrs/t.approved:null;
+  const reviewed=t.approved+t.rejected;
+  const rejPct=reviewed>0?(t.rejected/reviewed)*100:null;
+  return{...t,label,gap,newNeeded,approvedHrs,hpd,rejPct};
 });
-
-// Summary
-const done = data.filter(d => d.approved >= TARGET);
-const needNew = data.filter(d => d.approved < TARGET && d.newNeeded > 0).sort((a,b) => b.newNeeded - a.newNeeded);
-const watch = data.filter(d => d.approved < TARGET && d.newNeeded === 0).sort((a,b) => b.gap - a.gap);
-const totalNew = needNew.reduce((s,d) => s + d.newNeeded, 0);
-const totalApproved = data.reduce((s,d) => s + d.approved, 0);
-const totalPending = data.reduce((s,d) => s + d.pending, 0);
-const hpdArr = data.filter(d => d.hpd !== null).map(d => d.hpd);
-const avgHpd = hpdArr.reduce((s,v) => s+v, 0) / hpdArr.length;
-
-document.getElementById('summary-cards').innerHTML = `
-  <div class="card"><div class="val">${done.length} / ${data.length}</div><div class="lbl">Tasks at target (≥ 100 approved)</div></div>
+const totalApproved=data.reduce((s,d)=>s+d.approved,0);
+const totalRejected=data.reduce((s,d)=>s+d.rejected,0);
+const totalPending=data.reduce((s,d)=>s+d.pending,0);
+const overallRejPct=(totalRejected/(totalApproved+totalRejected)*100).toFixed(1);
+const done=data.filter(d=>d.approved>=TARGET);
+const needNew=data.filter(d=>d.approved<TARGET&&d.newNeeded>0).sort((a,b)=>b.newNeeded-a.newNeeded);
+const watch=data.filter(d=>d.approved<TARGET&&d.newNeeded===0).sort((a,b)=>b.gap-a.gap);
+const totalNew=needNew.reduce((s,d)=>s+d.newNeeded,0);
+document.getElementById('summary-cards').innerHTML=`
+  <div class="card"><div class="val">${done.length}/${data.length}</div><div class="lbl">Tasks at target</div></div>
   <div class="card"><div class="val">${totalNew}</div><div class="lbl">New recordings to schedule</div></div>
   <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved demos</div></div>
-  <div class="card"><div class="val">${avgHpd.toFixed(2)}h</div><div class="lbl">Avg hours per approved demo</div></div>
-`;
-
-// Tab 1 — Recordings needed
-function barColor(approved) {
-  if (approved >= 100) return '#639922';
-  if (approved >= 70)  return '#BA7517';
-  if (approved > 0)    return '#D85A30';
-  return '#b4b2a9';
-}
-
-document.getElementById('body-urgent').innerHTML = needNew.map(r => `
-  <tr>
-    <td>${r.label}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num muted">${r.gap}</td>
-    <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
-    <td class="num">
-      <span class="num-big ${r.newNeeded >= 70 ? 'needs-high' : r.newNeeded >= 30 ? 'needs-mid' : 'needs-low'}">${r.newNeeded}</span>
-    </td>
-  </tr>`).join('');
-
-document.getElementById('body-watch').innerHTML = watch.map(r => `
-  <tr>
-    <td>${r.label}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num muted">${r.gap}</td>
-    <td class="num">${r.pending}</td>
-    <td class="num"><span class="badge b-watch">Monitor pending</span></td>
-  </tr>`).join('');
-
-document.getElementById('body-done').innerHTML = done.map(r => `
-  <tr>
-    <td>${r.label}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num"><span class="badge b-teal">Complete</span></td>
-  </tr>`).join('');
-
-// Tab 2 — Full breakdown
-function badge(approved) {
-  if (approved >= 100) return '<span class="badge b-done">Target met</span>';
-  if (approved >= 70)  return '<span class="badge b-close">Close</span>';
-  if (approved > 0)    return '<span class="badge b-going">In progress</span>';
-  return '<span class="badge b-none">Not started</span>';
-}
-
-function renderBreakdown() {
-  const sortBy   = document.getElementById('sortSel').value;
-  const filterBy = document.getElementById('filterSel').value;
-  let rows = [...data];
-  if (filterBy === 'active')   rows = rows.filter(r => r.approved > 0);
-  if (filterBy === 'complete') rows = rows.filter(r => r.approved >= TARGET);
-  if (filterBy === 'none')     rows = rows.filter(r => r.approved === 0);
-  if (sortBy === 'approved') rows.sort((a,b) => b.approved - a.approved);
-  if (sortBy === 'needed')   rows.sort((a,b) => b.gap - a.gap);
-  if (sortBy === 'hpd')      rows.sort((a,b) => (b.hpd||0) - (a.hpd||0));
-  if (sortBy === 'name')     rows.sort((a,b) => a.label.localeCompare(b.label));
-
-  document.getElementById('body-breakdown').innerHTML = rows.map(r => {
-    const pct = Math.min(100, r.approved);
-    return `<tr>
-      <td>${r.label} ${badge(r.approved)}</td>
-      <td class="num">${r.approved}</td>
-      <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1) : '—'}</td>
-      <td class="num muted">${r.hpd !== null ? r.hpd.toFixed(2)+'h' : '—'}</td>
-      <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
-      <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
-      <td>
-        <div class="bar-wrap">
-          <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${barColor(r.approved)}"></div></div>
-          <span style="font-size:11px;color:#888780;min-width:28px">${pct}%</span>
-        </div>
-      </td>
+  <div class="card"><div class="val">${totalPending.toLocaleString()}</div><div class="lbl">Total pending review</div></div>
+  <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Overall rejection rate</div></div>`;
+function barColor(a){return a>=100?'#639922':a>=70?'#BA7517':a>0?'#D85A30':'#b4b2a9';}
+function rejClass(p){if(p===null)return'';if(p>=50)return'rej-high';if(p>=30)return'rej-mid';return'';}
+function rejCell(p){if(p===null)return'<td class="num muted">—</td>';return`<td class="num ${rejClass(p)}">${p.toFixed(0)}%</td>`;}
+function badge(a){if(a>=100)return'<span class="badge b-done">Target met</span>';if(a>=70)return'<span class="badge b-close">Close</span>';if(a>0)return'<span class="badge b-going">In progress</span>';return'<span class="badge b-none">Not started</span>';}
+document.getElementById('body-urgent').innerHTML=needNew.map(r=>`<tr>
+  <td>${r.label}</td><td class="num">${r.approved}</td><td class="num muted">${r.gap}</td>
+  <td class="num muted">${r.pending>0?r.pending:'—'}</td><td class="num muted">${r.rejected>0?r.rejected:'—'}</td>
+  ${rejCell(r.rejPct)}<td class="num"><span class="num-big ${r.newNeeded>=70?'needs-high':r.newNeeded>=30?'needs-mid':'needs-low'}">${r.newNeeded}</span></td>
+</tr>`).join('');
+document.getElementById('body-watch').innerHTML=watch.map(r=>`<tr>
+  <td>${r.label}</td><td class="num">${r.approved}</td><td class="num muted">${r.gap}</td>
+  <td class="num">${r.pending}</td><td class="num muted">${r.rejected>0?r.rejected:'—'}</td>
+  ${rejCell(r.rejPct)}<td class="num"><span class="badge b-watch">Monitor pending</span></td>
+</tr>`).join('');
+document.getElementById('body-done').innerHTML=done.map(r=>`<tr>
+  <td>${r.label}</td><td class="num">${r.approved}</td>${rejCell(r.rejPct)}
+  <td class="num"><span class="badge b-teal">Complete</span></td>
+</tr>`).join('');
+function renderBreakdown(){
+  const sortBy=document.getElementById('sortSel').value;
+  const filterBy=document.getElementById('filterSel').value;
+  let rows=[...data];
+  if(filterBy==='active')rows=rows.filter(r=>r.approved>0);
+  if(filterBy==='complete')rows=rows.filter(r=>r.approved>=TARGET);
+  if(filterBy==='none')rows=rows.filter(r=>r.approved===0);
+  if(sortBy==='approved')rows.sort((a,b)=>b.approved-a.approved);
+  if(sortBy==='needed')rows.sort((a,b)=>b.gap-a.gap);
+  if(sortBy==='rejpct')rows.sort((a,b)=>(b.rejPct||0)-(a.rejPct||0));
+  if(sortBy==='hpd')rows.sort((a,b)=>(b.hpd||0)-(a.hpd||0));
+  if(sortBy==='name')rows.sort((a,b)=>a.label.localeCompare(b.label));
+  document.getElementById('body-breakdown').innerHTML=rows.map(r=>{
+    const pct=Math.min(100,r.approved);
+    return`<tr>
+      <td>${r.label} ${badge(r.approved)}</td><td class="num">${r.approved}</td>
+      <td class="num muted">${r.approvedHrs>0?r.approvedHrs.toFixed(1):'—'}</td>
+      <td class="num muted">${r.hpd!==null?r.hpd.toFixed(2)+'h':'—'}</td>
+      <td class="num muted">${r.pending>0?r.pending:'—'}</td>
+      <td class="num muted">${r.rejected>0?r.rejected:'—'}</td>
+      <td class="num ${rejClass(r.rejPct)}">${r.rejPct!==null?r.rejPct.toFixed(0)+'%':'—'}</td>
+      <td><div class="bar-wrap"><div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${barColor(r.approved)}"></div></div>
+      <span style="font-size:11px;color:#888780;min-width:28px">${pct}%</span></div></td>
     </tr>`;
   }).join('');
 }
-
 renderBreakdown();
-
-function switchTab(name) {
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
-  document.getElementById('tab-' + name).classList.add('active');
-  event.target.classList.add('active');
+function switchTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  el.classList.add('active');
 }
 </script>
 </body>
