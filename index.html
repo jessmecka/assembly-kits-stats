@@ -7,7 +7,7 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; color: #1a1a18; font-size: 13px; }
-  .page { max-width: 1100px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .page { max-width: 1140px; margin: 0 auto; padding: 2rem 1.5rem; }
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
   .subtitle { font-size: 12px; color: #888780; margin-bottom: 2rem; }
 
@@ -23,6 +23,7 @@
   .dot-red { background: #E24B4A; }
   .dot-amber { background: #BA7517; }
   .dot-teal { background: #1D9E75; }
+  .dot-gray { background: #b4b2a9; }
 
   .controls { display: flex; gap: 10px; align-items: center; padding: 10px 0 12px; flex-wrap: wrap; }
   .controls label { font-size: 11px; color: #888780; }
@@ -37,18 +38,22 @@
   td.num { text-align: right; font-variant-numeric: tabular-nums; }
   td.muted { color: #888780; }
   tr:hover td { background: #f9f8f5; }
+  tr.on-route td { color: #888780; }
+  tr.on-route:hover td { background: #fafaf8; }
 
   .bar-wrap { display: flex; align-items: center; gap: 8px; }
   .bar-bg { flex: 1; height: 5px; background: #ebebea; border-radius: 3px; overflow: hidden; min-width: 60px; }
   .bar-fill { height: 100%; border-radius: 3px; }
 
   .badge { display: inline-block; font-size: 10px; font-weight: 500; padding: 2px 8px; border-radius: 10px; }
-  .b-done  { background: #EAF3DE; color: #3B6D11; }
-  .b-close { background: #FAEEDA; color: #854F0B; }
-  .b-going { background: #FAECE7; color: #993C1D; }
-  .b-none  { background: #f1efe8; color: #5f5e5a; }
-  .b-watch { background: #FAEEDA; color: #854F0B; }
-  .b-teal  { background: #E1F5EE; color: #0F6E56; }
+  .b-done     { background: #EAF3DE; color: #3B6D11; }
+  .b-close    { background: #FAEEDA; color: #854F0B; }
+  .b-going    { background: #FAECE7; color: #993C1D; }
+  .b-none     { background: #f1efe8; color: #5f5e5a; }
+  .b-watch    { background: #FAEEDA; color: #854F0B; }
+  .b-teal     { background: #E1F5EE; color: #0F6E56; }
+  .b-route    { background: #EDECEA; color: #5f5e5a; }
+  .b-mismap   { background: #FDE8E8; color: #A32D2D; }
 
   .num-big { font-weight: 500; font-size: 13px; }
   .needs-high { color: #A32D2D; }
@@ -65,10 +70,8 @@
   .tab-panel.active { display: block; }
 
   .note { font-size: 11px; color: #888780; margin-top: 10px; padding: 8px 12px; background: #f9f8f5; border-radius: 6px; border-left: 2px solid #d3d1c7; }
+  .note-warn { border-left-color: #E24B4A; background: #FEF4F4; color: #7a2020; }
   .updated { font-size: 11px; color: #888780; margin-top: 1.5rem; text-align: right; }
-
-  @media (max-width: 800px) { .cards { grid-template-columns: repeat(2, 1fr); } }
-  @media (max-width: 500px) { .cards { grid-template-columns: 1fr 1fr; } }
 </style>
 </head>
 <body>
@@ -89,13 +92,14 @@
       <div class="section-title"><span class="dot dot-red"></span>Needs new recordings</div>
       <table>
         <thead><tr>
-          <th style="width:35%">Task</th>
-          <th class="num" style="width:11%">Approved</th>
-          <th class="num" style="width:10%">Gap to 100</th>
-          <th class="num" style="width:14%">Pending review</th>
-          <th class="num" style="width:10%">Rejected</th>
-          <th class="num" style="width:10%">Rej %</th>
-          <th class="num" style="width:20%">New recordings needed</th>
+          <th style="width:32%">Task</th>
+          <th class="num" style="width:9%">Approved</th>
+          <th class="num" style="width:9%">Gap to 100</th>
+          <th class="num" style="width:11%">Pending review</th>
+          <th class="num" style="width:8%">Rejected</th>
+          <th class="num" style="width:8%">Rej %</th>
+          <th class="num" style="width:11%">New needed</th>
+          <th class="num" style="width:12%">Est. hrs to record</th>
         </tr></thead>
         <tbody id="body-urgent"></tbody>
       </table>
@@ -105,13 +109,13 @@
       <div class="section-title"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
       <table>
         <thead><tr>
-          <th style="width:35%">Task</th>
-          <th class="num" style="width:11%">Approved</th>
-          <th class="num" style="width:10%">Gap to 100</th>
-          <th class="num" style="width:14%">Pending review</th>
-          <th class="num" style="width:10%">Rejected</th>
-          <th class="num" style="width:10%">Rej %</th>
-          <th class="num" style="width:20%">Status</th>
+          <th style="width:32%">Task</th>
+          <th class="num" style="width:9%">Approved</th>
+          <th class="num" style="width:9%">Gap to 100</th>
+          <th class="num" style="width:11%">Pending review</th>
+          <th class="num" style="width:8%">Rejected</th>
+          <th class="num" style="width:8%">Rej %</th>
+          <th class="num" style="width:23%">Status</th>
         </tr></thead>
         <tbody id="body-watch"></tbody>
       </table>
@@ -130,6 +134,19 @@
         <tbody id="body-done"></tbody>
       </table>
     </div>
+
+    <div class="section">
+      <div class="section-title"><span class="dot dot-gray"></span>On route — unavailable for recording</div>
+      <table>
+        <thead><tr>
+          <th style="width:50%">Task</th>
+          <th class="num" style="width:20%">Recordings in system</th>
+          <th class="num" style="width:30%">Status</th>
+        </tr></thead>
+        <tbody id="body-onroute"></tbody>
+      </table>
+      <p class="note note-warn">⚠ Kits marked "Mapping issue" have recordings in the system but the kit has not arrived. Check task ID mapping.</p>
+    </div>
   </div>
 
   <!-- TAB 2 -->
@@ -141,6 +158,7 @@
         <option value="needed">Gap to 100 ↓</option>
         <option value="rejpct">Rejection rate ↓</option>
         <option value="hpd">Hours per demo ↓</option>
+        <option value="esthrs">Est. hrs needed ↓</option>
         <option value="name">Task name A–Z</option>
       </select>
       <label style="margin-left:8px">Filter</label>
@@ -149,30 +167,49 @@
         <option value="active">Has approved demos</option>
         <option value="complete">Target met (≥ 100)</option>
         <option value="none">No approved demos yet</option>
+        <option value="onroute">On route only</option>
       </select>
     </div>
     <table>
       <thead><tr>
-        <th style="width:26%">Task</th>
-        <th class="num" style="width:10%">Approved</th>
-        <th class="num" style="width:11%">Approved hrs</th>
-        <th class="num" style="width:10%">Hrs / demo</th>
-        <th class="num" style="width:9%">Pending</th>
-        <th class="num" style="width:9%">Rejected</th>
-        <th class="num" style="width:9%">Rej %</th>
-        <th style="width:16%">Progress to 100</th>
+        <th style="width:24%">Task</th>
+        <th class="num" style="width:8%">Approved</th>
+        <th class="num" style="width:9%">Approved hrs</th>
+        <th class="num" style="width:8%">Hrs / demo</th>
+        <th class="num" style="width:8%">Pending</th>
+        <th class="num" style="width:8%">Rejected</th>
+        <th class="num" style="width:7%">Rej %</th>
+        <th class="num" style="width:10%">Est. hrs needed</th>
+        <th style="width:14%">Progress to 100</th>
       </tr></thead>
       <tbody id="body-breakdown"></tbody>
     </table>
   </div>
 
-  <p class="updated">Last updated: May 27, 2026 at 1:02 AM · Source: mecka-ai MongoDB</p>
+  <p class="updated">Last updated: May 27, 2026 at 1:25 AM · Source: mecka-ai MongoDB</p>
 </div>
 
 <script>
+// Kits physically on route — cannot have valid recordings yet
+const ON_ROUTE = new Set([
+  "assemble_montessori_tool_bench",
+  "assemble_3in1_dinosaurs_on_wheels",
+  "assemble_iiromeci_gears",
+  "assemble_gigglescape_train_set",
+  "assemble_soft_baby_squishies",
+  "assemble_hot_wheels_car",
+  "assemble_mega_bloks_big_bag",
+  "assemble_little_tikes_power_cuts",
+  "assemble_disney_cars_color_changer",
+  "assemble_tumble_tree_timbers",
+  "assemble_basytodio_blocks",
+  "assemble_lehoo_castle_tool_set",
+  "assemble_nails",
+]);
+
 const rawTasks = [
+  // --- Active kits (from MongoDB) ---
   {id:"assemble_3in1_animals_on_wheels",          approved:104, approvedSecs:255945, pending:0,   rejected:29},
-  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,      pending:1,   rejected:0},
   {id:"assemble_aolew_erector_set",               approved:50,  approvedSecs:138975, pending:28,  rejected:84},
   {id:"assemble_apluses_magnetic_blocks",         approved:2,   approvedSecs:6719,   pending:70,  rejected:2},
   {id:"assemble_battat_toy_plane",                approved:37,  approvedSecs:106563, pending:29,  rejected:29},
@@ -191,7 +228,6 @@ const rawTasks = [
   {id:"assemble_gigglescape_construction_set",    approved:0,   approvedSecs:0,      pending:7,   rejected:0},
   {id:"assemble_hape_drive_car",                  approved:44,  approvedSecs:109612, pending:54,  rejected:8},
   {id:"assemble_haptime_design_set",              approved:0,   approvedSecs:0,      pending:72,  rejected:0},
-  {id:"assemble_iiromeci_gears",                  approved:0,   approvedSecs:0,      pending:0,   rejected:1},
   {id:"assemble_kids_first_robot_factory",        approved:5,   approvedSecs:9989,   pending:125, rejected:0},
   {id:"assemble_lacchoufee_tool_box_1",           approved:63,  approvedSecs:184502, pending:96,  rejected:24},
   {id:"assemble_lacchoufee_tool_box_2",           approved:9,   approvedSecs:27306,  pending:27,  rejected:10},
@@ -208,7 +244,6 @@ const rawTasks = [
   {id:"assemble_magnetic_train_track",            approved:0,   approvedSecs:0,      pending:87,  rejected:0},
   {id:"assemble_marble_run",                      approved:0,   approvedSecs:0,      pending:111, rejected:0},
   {id:"assemble_melissa_doug_sandwich_counter",   approved:38,  approvedSecs:104485, pending:27,  rejected:10},
-  {id:"assemble_montessori_tool_bench",           approved:4,   approvedSecs:10424,  pending:0,   rejected:2},
   {id:"assemble_motor_works_vehicles",            approved:30,  approvedSecs:80780,  pending:65,  rejected:20},
   {id:"assemble_mould_king_v8_kit",               approved:27,  approvedSecs:68876,  pending:132, rejected:24},
   {id:"assemble_mould_king_v8_model",             approved:0,   approvedSecs:0,      pending:147, rejected:4},
@@ -223,38 +258,66 @@ const rawTasks = [
   {id:"assemble_wonder_tiles_city",               approved:39,  approvedSecs:104107, pending:74,  rejected:14},
   {id:"assemble_wooden_train_set",                approved:19,  approvedSecs:48377,  pending:91,  rejected:28},
   {id:"assemble_zozoplay_gear_set",               approved:92,  approvedSecs:245269, pending:1,   rejected:92},
+  // --- On route kits with recordings in system (possible mapping issue) ---
+  {id:"assemble_montessori_tool_bench",           approved:4,   approvedSecs:10424,  pending:0,   rejected:2},
+  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,      pending:1,   rejected:0},
+  {id:"assemble_iiromeci_gears",                  approved:0,   approvedSecs:0,      pending:0,   rejected:1},
+  // --- On route kits not yet in system ---
+  {id:"assemble_gigglescape_train_set",           approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_soft_baby_squishies",             approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_hot_wheels_car",                  approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_mega_bloks_big_bag",              approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_little_tikes_power_cuts",         approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_disney_cars_color_changer",       approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_tumble_tree_timbers",             approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_basytodio_blocks",                approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_lehoo_castle_tool_set",           approved:0,   approvedSecs:0,      pending:0,   rejected:0},
+  {id:"assemble_nails",                           approved:0,   approvedSecs:0,      pending:0,   rejected:0},
 ];
 
 const TARGET = 100;
+
+// Compute global avg hpd from tasks that have approved demos (excluding on-route)
+const hpdSamples = rawTasks
+  .filter(t => !ON_ROUTE.has(t.id) && t.approved > 0)
+  .map(t => (t.approvedSecs / 3600) / t.approved);
+const avgHpd = hpdSamples.reduce((s,v) => s+v, 0) / hpdSamples.length;
+
 const data = rawTasks.map(t => {
   const label = t.id.replace('assemble_','').replace(/_/g,' ');
+  const onRoute = ON_ROUTE.has(t.id);
   const gap = Math.max(0, TARGET - t.approved);
-  const newNeeded = Math.max(0, gap - t.pending);
+  const newNeeded = onRoute ? 0 : Math.max(0, gap - t.pending);
   const approvedHrs = t.approvedSecs / 3600;
   const hpd = t.approved > 0 ? approvedHrs / t.approved : null;
   const reviewed = t.approved + t.rejected;
   const rejPct = reviewed > 0 ? (t.rejected / reviewed) * 100 : null;
-  return { ...t, label, gap, newNeeded, approvedHrs, hpd, rejPct };
+  const estHrsNeeded = onRoute ? null : newNeeded > 0 ? newNeeded * (hpd || avgHpd) : 0;
+  const hasRecordings = (t.approved + t.pending + t.rejected) > 0;
+  return { ...t, label, onRoute, gap, newNeeded, approvedHrs, hpd, rejPct, estHrsNeeded, hasRecordings };
 });
 
-// Totals
-const totalApproved = data.reduce((s,d) => s + d.approved, 0);
-const totalRejected = data.reduce((s,d) => s + d.rejected, 0);
-const totalPending  = data.reduce((s,d) => s + d.pending, 0);
+// Split on-route vs active
+const active   = data.filter(d => !d.onRoute);
+const onRoute  = data.filter(d => d.onRoute);
+
+// Active task buckets
+const totalApproved = active.reduce((s,d) => s + d.approved, 0);
+const totalRejected = active.reduce((s,d) => s + d.rejected, 0);
+const totalPending  = active.reduce((s,d) => s + d.pending, 0);
 const totalReviewed = totalApproved + totalRejected;
-const overallRejPct = (totalRejected / totalReviewed * 100).toFixed(1);
-const done    = data.filter(d => d.approved >= TARGET);
-const needNew = data.filter(d => d.approved < TARGET && d.newNeeded > 0).sort((a,b) => b.newNeeded - a.newNeeded);
-const watch   = data.filter(d => d.approved < TARGET && d.newNeeded === 0).sort((a,b) => b.gap - a.gap);
+const overallRejPct = totalReviewed > 0 ? (totalRejected / totalReviewed * 100).toFixed(1) : '0.0';
+const done    = active.filter(d => d.approved >= TARGET);
+const needNew = active.filter(d => d.approved < TARGET && d.newNeeded > 0).sort((a,b) => b.newNeeded - a.newNeeded);
+const watch   = active.filter(d => d.approved < TARGET && d.newNeeded === 0).sort((a,b) => b.gap - a.gap);
 const totalNew = needNew.reduce((s,d) => s + d.newNeeded, 0);
-const hpdArr  = data.filter(d => d.hpd !== null).map(d => d.hpd);
-const avgHpd  = hpdArr.reduce((s,v) => s+v, 0) / hpdArr.length;
+const totalEstHrs = needNew.reduce((s,d) => s + (d.estHrsNeeded || 0), 0);
 
 document.getElementById('summary-cards').innerHTML = `
-  <div class="card"><div class="val">${done.length} / ${data.length}</div><div class="lbl">Tasks at target (≥ 100 approved)</div></div>
+  <div class="card"><div class="val">${done.length} / ${active.length}</div><div class="lbl">Tasks at target (≥ 100 approved)</div></div>
   <div class="card"><div class="val">${totalNew}</div><div class="lbl">New recordings to schedule</div></div>
+  <div class="card"><div class="val">${totalEstHrs.toFixed(0)}h</div><div class="lbl">Est. recording hours needed</div></div>
   <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved demos</div></div>
-  <div class="card"><div class="val">${totalPending.toLocaleString()}</div><div class="lbl">Total pending review</div></div>
   <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Overall rejection rate (of reviewed)</div></div>
 `;
 
@@ -279,6 +342,12 @@ function badge(approved) {
   return '<span class="badge b-none">Not started</span>';
 }
 
+function fmtHrs(h) {
+  if (h === null || h === undefined) return '—';
+  if (h === 0) return '—';
+  return h.toFixed(1) + 'h';
+}
+
 // Tab 1 — urgent
 document.getElementById('body-urgent').innerHTML = needNew.map(r => `
   <tr>
@@ -289,6 +358,7 @@ document.getElementById('body-urgent').innerHTML = needNew.map(r => `
     <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="num-big ${r.newNeeded >= 70 ? 'needs-high' : r.newNeeded >= 30 ? 'needs-mid' : 'needs-low'}">${r.newNeeded}</span></td>
+    <td class="num muted">${fmtHrs(r.estHrsNeeded)}${r.hpd === null ? '<span style="font-size:10px;color:#b4b2a9"> est</span>' : ''}</td>
   </tr>`).join('');
 
 document.getElementById('body-watch').innerHTML = watch.map(r => `
@@ -310,34 +380,62 @@ document.getElementById('body-done').innerHTML = done.map(r => `
     <td class="num"><span class="badge b-teal">Complete</span></td>
   </tr>`).join('');
 
+// Tab 1 — on route
+document.getElementById('body-onroute').innerHTML = onRoute.sort((a,b) => {
+  // Mapping issues first
+  if (a.hasRecordings && !b.hasRecordings) return -1;
+  if (!a.hasRecordings && b.hasRecordings) return 1;
+  return a.label.localeCompare(b.label);
+}).map(r => {
+  const total = r.approved + r.pending + r.rejected;
+  const countCell = total > 0
+    ? `<td class="num" style="color:#A32D2D;font-weight:500">${total} recording${total > 1 ? 's' : ''}</td>`
+    : `<td class="num muted">—</td>`;
+  const statusCell = total > 0
+    ? `<td class="num"><span class="badge b-mismap">⚠ Mapping issue</span></td>`
+    : `<td class="num"><span class="badge b-route">On route</span></td>`;
+  return `<tr class="on-route"><td>${r.label}</td>${countCell}${statusCell}</tr>`;
+}).join('');
+
 // Tab 2 — full breakdown
 function renderBreakdown() {
   const sortBy   = document.getElementById('sortSel').value;
   const filterBy = document.getElementById('filterSel').value;
   let rows = [...data];
-  if (filterBy === 'active')   rows = rows.filter(r => r.approved > 0);
-  if (filterBy === 'complete') rows = rows.filter(r => r.approved >= TARGET);
-  if (filterBy === 'none')     rows = rows.filter(r => r.approved === 0);
+  if (filterBy === 'active')   rows = rows.filter(r => !r.onRoute && r.approved > 0);
+  if (filterBy === 'complete') rows = rows.filter(r => !r.onRoute && r.approved >= TARGET);
+  if (filterBy === 'none')     rows = rows.filter(r => !r.onRoute && r.approved === 0);
+  if (filterBy === 'onroute')  rows = rows.filter(r => r.onRoute);
   if (sortBy === 'approved') rows.sort((a,b) => b.approved - a.approved);
   if (sortBy === 'needed')   rows.sort((a,b) => b.gap - a.gap);
   if (sortBy === 'rejpct')   rows.sort((a,b) => (b.rejPct||0) - (a.rejPct||0));
   if (sortBy === 'hpd')      rows.sort((a,b) => (b.hpd||0) - (a.hpd||0));
+  if (sortBy === 'esthrs')   rows.sort((a,b) => (b.estHrsNeeded||0) - (a.estHrsNeeded||0));
   if (sortBy === 'name')     rows.sort((a,b) => a.label.localeCompare(b.label));
 
   document.getElementById('body-breakdown').innerHTML = rows.map(r => {
     const pct = Math.min(100, r.approved);
-    return `<tr>
-      <td>${r.label} ${badge(r.approved)}</td>
-      <td class="num">${r.approved}</td>
+    const routeTag = r.onRoute
+      ? (r.hasRecordings
+          ? ' <span class="badge b-mismap">⚠ Mapping issue</span>'
+          : ' <span class="badge b-route">On route</span>')
+      : badge(r.approved);
+    const estCell = r.onRoute
+      ? `<td class="num muted">—</td>`
+      : `<td class="num muted">${fmtHrs(r.estHrsNeeded)}${r.estHrsNeeded > 0 && r.hpd === null ? '<span style="font-size:10px;color:#b4b2a9"> est</span>' : ''}</td>`;
+    return `<tr${r.onRoute ? ' class="on-route"' : ''}>
+      <td>${r.label} ${routeTag}</td>
+      <td class="num">${r.approved > 0 ? r.approved : r.onRoute ? '—' : r.approved}</td>
       <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1) : '—'}</td>
       <td class="num muted">${r.hpd !== null ? r.hpd.toFixed(2)+'h' : '—'}</td>
       <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
       <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
       <td class="num ${rejClass(r.rejPct)}">${r.rejPct !== null ? r.rejPct.toFixed(0)+'%' : '—'}</td>
+      ${estCell}
       <td>
         <div class="bar-wrap">
-          <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${barColor(r.approved)}"></div></div>
-          <span style="font-size:11px;color:#888780;min-width:28px">${pct}%</span>
+          <div class="bar-bg"><div class="bar-fill" style="width:${pct}%;background:${r.onRoute ? '#d3d1c7' : barColor(r.approved)}"></div></div>
+          <span style="font-size:11px;color:#888780;min-width:28px">${r.onRoute ? '—' : pct+'%'}</span>
         </div>
       </td>
     </tr>`;
