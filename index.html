@@ -79,7 +79,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of May 29, 2026</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of May 30, 2026</p>
 
   <div class="cards" id="summary-cards"></div>
 
@@ -188,7 +188,7 @@
     </table>
   </div>
 
-  <p class="updated">Last updated: May 29, 2026 at 10:38 PM CST · Source: mecka-ai MongoDB</p>
+  <p class="updated">Last updated: May 30, 2026 at 11:11 AM CST · Source: mecka-ai MongoDB</p>
 </div>
 
 <script>
@@ -215,54 +215,54 @@ const ON_ROUTE = new Set([
 const rawTasks = [
   // --- Active kits (from MongoDB) ---
   {id:"assemble_3in1_animals_on_wheels",          approved:104, approvedSecs:255945, pending:0,   rejected:29},
-  {id:"assemble_aolew_erector_set",               approved:50,  approvedSecs:138975, pending:85,  rejected:84},
-  {id:"assemble_apluses_magnetic_blocks",         approved:7,   approvedSecs:20776,  pending:126, rejected:5},
-  {id:"assemble_basytodio_blocks",                approved:0,   approvedSecs:0,      pending:33,  rejected:0},
-  {id:"assemble_battat_toy_plane",                approved:37,  approvedSecs:106563, pending:93,  rejected:29},
-  {id:"assemble_bluey_family_house",              approved:68,  approvedSecs:172785, pending:78,  rejected:12},
-  {id:"assemble_bracelet_kit",                    approved:18,  approvedSecs:46711,  pending:119, rejected:23},
-  {id:"assemble_btoys_oven",                      approved:0,   approvedSecs:0,      pending:108, rejected:0},
+  {id:"assemble_aolew_erector_set",               approved:50,  approvedSecs:138975, pending:90,  rejected:84},
+  {id:"assemble_apluses_magnetic_blocks",         approved:7,   approvedSecs:20776,  pending:143, rejected:5},
+  {id:"assemble_basytodio_blocks",                approved:0,   approvedSecs:0,      pending:45,  rejected:0},
+  {id:"assemble_battat_toy_plane",                approved:37,  approvedSecs:106563, pending:105, rejected:29},
+  {id:"assemble_bluey_family_house",              approved:68,  approvedSecs:172785, pending:82,  rejected:12},
+  {id:"assemble_bracelet_kit",                    approved:18,  approvedSecs:46711,  pending:133, rejected:23},
+  {id:"assemble_btoys_oven",                      approved:0,   approvedSecs:0,      pending:121, rejected:0},
   {id:"assemble_cars_3_mcqueen_kit",              approved:55,  approvedSecs:149799, pending:87,  rejected:7},
-  {id:"assemble_coogam_racing_car",               approved:46,  approvedSecs:113182, pending:87,  rejected:26},
-  {id:"assemble_dekilea_gear_blocks",             approved:1,   approvedSecs:1321,   pending:119, rejected:2},
-  {id:"assemble_design_gears_workshop",           approved:11,  approvedSecs:30572,  pending:78,  rejected:2},
-  {id:"assemble_design_robot",                    approved:43,  approvedSecs:127565, pending:92,  rejected:27},
-  {id:"assemble_dinosaur_toy",                    approved:0,   approvedSecs:0,      pending:160, rejected:0},
-  {id:"assemble_disney_cars_copper_canyon",       approved:37,  approvedSecs:84833,  pending:70,  rejected:14},
-  {id:"assemble_fire_truck",                      approved:55,  approvedSecs:138018, pending:84,  rejected:26},
-  {id:"assemble_fyd_jeep",                        approved:0,   approvedSecs:0,      pending:139, rejected:0},
-  {id:"assemble_hape_drive_car",                  approved:50,  approvedSecs:121527, pending:45,  rejected:11},
-  {id:"assemble_haptime_design_set",              approved:0,   approvedSecs:0,      pending:127, rejected:0},
-  {id:"assemble_kids_first_robot_factory",        approved:12,  approvedSecs:27876,  pending:116, rejected:2},
+  {id:"assemble_coogam_racing_car",               approved:46,  approvedSecs:113182, pending:98,  rejected:26},
+  {id:"assemble_dekilea_gear_blocks",             approved:2,   approvedSecs:4647,   pending:118, rejected:2},
+  {id:"assemble_design_gears_workshop",           approved:11,  approvedSecs:30572,  pending:87,  rejected:2},
+  {id:"assemble_design_robot",                    approved:43,  approvedSecs:127565, pending:103, rejected:27},
+  {id:"assemble_dinosaur_toy",                    approved:0,   approvedSecs:0,      pending:161, rejected:0},
+  {id:"assemble_disney_cars_copper_canyon",       approved:38,  approvedSecs:86394,  pending:82,  rejected:14},
+  {id:"assemble_fire_truck",                      approved:55,  approvedSecs:138018, pending:97,  rejected:26},
+  {id:"assemble_fyd_jeep",                        approved:0,   approvedSecs:0,      pending:151, rejected:0},
+  {id:"assemble_hape_drive_car",                  approved:51,  approvedSecs:123953, pending:51,  rejected:11},
+  {id:"assemble_haptime_design_set",              approved:0,   approvedSecs:0,      pending:140, rejected:0},
+  {id:"assemble_kids_first_robot_factory",        approved:13,  approvedSecs:28370,  pending:115, rejected:2},
   {id:"assemble_lacchoufee_tool_box_1",           approved:67,  approvedSecs:195533, pending:139, rejected:24},
-  {id:"assemble_lacchoufee_tool_box_2",           approved:10,  approvedSecs:27721,  pending:48,  rejected:11},
-  {id:"assemble_laugh_learn_coffee_cafe",         approved:14,  approvedSecs:39570,  pending:72,  rejected:30},
-  {id:"assemble_lego_angel_stitch_brick_headz",   approved:54,  approvedSecs:148030, pending:72,  rejected:72},
-  {id:"assemble_lego_duplo_cake",                 approved:54,  approvedSecs:144670, pending:80,  rejected:16},
-  {id:"assemble_lego_duplo_garden",               approved:71,  approvedSecs:188284, pending:72,  rejected:38},
-  {id:"assemble_lego_jet_vs_car",                 approved:93,  approvedSecs:248818, pending:0,   rejected:67},
-  {id:"assemble_lego_road_plates",                approved:0,   approvedSecs:0,      pending:126, rejected:0},
-  {id:"assemble_lego_year_of_horse",              approved:68,  approvedSecs:205418, pending:60,  rejected:65},
+  {id:"assemble_lacchoufee_tool_box_2",           approved:10,  approvedSecs:27721,  pending:72,  rejected:11},
+  {id:"assemble_laugh_learn_coffee_cafe",         approved:14,  approvedSecs:39570,  pending:98,  rejected:30},
+  {id:"assemble_lego_angel_stitch_brick_headz",   approved:54,  approvedSecs:148030, pending:84,  rejected:72},
+  {id:"assemble_lego_duplo_cake",                 approved:54,  approvedSecs:144670, pending:91,  rejected:16},
+  {id:"assemble_lego_duplo_garden",               approved:71,  approvedSecs:188284, pending:87,  rejected:38},
+  {id:"assemble_lego_jet_vs_car",                 approved:93,  approvedSecs:248818, pending:7,   rejected:67},
+  {id:"assemble_lego_road_plates",                approved:0,   approvedSecs:0,      pending:137, rejected:0},
+  {id:"assemble_lego_year_of_horse",              approved:68,  approvedSecs:205418, pending:74,  rejected:65},
   {id:"assemble_little_tikes_hammer_nail",        approved:32,  approvedSecs:87616,  pending:74,  rejected:8},
-  {id:"assemble_little_tikes_measure_cut",        approved:26,  approvedSecs:69322,  pending:59,  rejected:33},
-  {id:"assemble_magna_tiles_puppy_park",          approved:56,  approvedSecs:140319, pending:69,  rejected:33},
-  {id:"assemble_magnetic_train_track",            approved:0,   approvedSecs:0,      pending:152, rejected:0},
+  {id:"assemble_little_tikes_measure_cut",        approved:27,  approvedSecs:73054,  pending:65,  rejected:33},
+  {id:"assemble_magna_tiles_puppy_park",          approved:56,  approvedSecs:140319, pending:94,  rejected:33},
+  {id:"assemble_magnetic_train_track",            approved:0,   approvedSecs:0,      pending:156, rejected:0},
   {id:"assemble_marble_run",                      approved:0,   approvedSecs:0,      pending:111, rejected:0},
-  {id:"assemble_melissa_doug_sandwich_counter",   approved:51,  approvedSecs:145163, pending:65,  rejected:10},
+  {id:"assemble_melissa_doug_sandwich_counter",   approved:51,  approvedSecs:145163, pending:87,  rejected:10},
   {id:"assemble_motor_works_vehicles",            approved:35,  approvedSecs:93385,  pending:71,  rejected:22},
   {id:"assemble_mould_king_v8_kit",               approved:31,  approvedSecs:78639,  pending:120, rejected:32},
   {id:"assemble_mould_king_v8_model",             approved:0,   approvedSecs:0,      pending:142, rejected:9},
-  {id:"assemble_ooze_labs_chemistry",             approved:39,  approvedSecs:97446,  pending:97,  rejected:10},
+  {id:"assemble_ooze_labs_chemistry",             approved:40,  approvedSecs:101177, pending:109, rejected:10},
   {id:"assemble_play_dinos",                      approved:30,  approvedSecs:87409,  pending:82,  rejected:17},
-  {id:"assemble_pup_go_car",                      approved:70,  approvedSecs:198519, pending:48,  rejected:32},
-  {id:"assemble_remote_control_gear_bot",         approved:37,  approvedSecs:98121,  pending:86,  rejected:18},
+  {id:"assemble_pup_go_car",                      approved:70,  approvedSecs:198519, pending:61,  rejected:32},
+  {id:"assemble_remote_control_gear_bot",         approved:38,  approvedSecs:101148, pending:98,  rejected:18},
   {id:"assemble_retro_car",                       approved:89,  approvedSecs:235057, pending:37,  rejected:70},
-  {id:"assemble_tonze_kids_tool_bench",           approved:68,  approvedSecs:194972, pending:57,  rejected:27},
-  {id:"assemble_veais_kids_set",                  approved:0,   approvedSecs:0,      pending:140, rejected:0},
-  {id:"assemble_vtech_drill_toolbox",             approved:21,  approvedSecs:50484,  pending:88,  rejected:16},
+  {id:"assemble_tonze_kids_tool_bench",           approved:68,  approvedSecs:194972, pending:61,  rejected:27},
+  {id:"assemble_veais_kids_set",                  approved:0,   approvedSecs:0,      pending:145, rejected:0},
+  {id:"assemble_vtech_drill_toolbox",             approved:21,  approvedSecs:50484,  pending:100, rejected:16},
   {id:"assemble_wonder_tiles_city",               approved:44,  approvedSecs:121477, pending:90,  rejected:16},
-  {id:"assemble_wooden_train_set",                approved:27,  approvedSecs:69083,  pending:84,  rejected:29},
-  {id:"assemble_zozoplay_gear_set",               approved:92,  approvedSecs:245269, pending:1,   rejected:92},
+  {id:"assemble_wooden_train_set",                approved:28,  approvedSecs:70099,  pending:83,  rejected:29},
+  {id:"assemble_zozoplay_gear_set",               approved:92,  approvedSecs:245269, pending:8,   rejected:92},
   // --- Toronto kits ---
   {id:"assemble_gigglescape_construction_set",    approved:1,   approvedSecs:3326,   pending:4,   rejected:1},
   {id:"assemble_montessori_tool_bench",           approved:4,   approvedSecs:10424,  pending:5,   rejected:2},
