@@ -289,7 +289,7 @@ const hpdSamples = rawTasks
 const avgHpd = hpdSamples.reduce((s,v) => s+v, 0) / hpdSamples.length;
 
 const data = rawTasks.map(t => {
-  const label = t.id.replace('assemble_','').replace(/_/g,' ');
+  const label = t.id;
   const onRoute = ON_ROUTE.has(t.id);
   const location = TORONTO.has(t.id) || onRoute ? "Toronto" : "Longhua";
   const gap = Math.max(0, TARGET - t.approved);
