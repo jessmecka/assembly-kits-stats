@@ -79,7 +79,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of June 05, 2026 at 09:13 PM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of June 06, 2026 at 03:30 AM CST</p>
 
   <div class="cards" id="summary-cards"></div>
 
@@ -194,7 +194,7 @@
     </table>
   </div>
 
-  <p class="updated">Last updated: June 05, 2026 at 09:13 PM CST · Source: mecka-ai MongoDB</p>
+  <p class="updated">Last updated: June 06, 2026 at 03:30 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto)</p>
 </div>
 
 <script>
@@ -219,9 +219,9 @@ const ON_ROUTE = new Set([
 ]);
 
 const rawTasks = [
-  // --- Active kits (from MongoDB) ---
-  {id:"assemble_3in1_animals_on_wheels",          approved:104, approvedSecs:255945,  pending:0,   pendingSecs:0,      rejected:29},
-  {id:"assemble_aolew_erector_set",               approved:51,  approvedSecs:142307,  pending:89,  pendingSecs:248321, rejected:84},
+  // --- Active kits (Longhua + Toronto merged) ---
+  {id:"assemble_3in1_animals_on_wheels",          approved:105, approvedSecs:258034,  pending:74,  pendingSecs:189089, rejected:40},
+  {id:"assemble_aolew_erector_set",               approved:51,  approvedSecs:142307,  pending:92,  pendingSecs:261164, rejected:84},
   {id:"assemble_apluses_magnetic_blocks",         approved:28,  approvedSecs:78312,   pending:161, pendingSecs:376664, rejected:10},
   {id:"assemble_basytodio_blocks",                approved:1,   approvedSecs:2516,    pending:84,  pendingSecs:219245, rejected:0},
   {id:"assemble_battat_toy_plane",                approved:38,  approvedSecs:109919,  pending:141, pendingSecs:353239, rejected:29},
@@ -249,8 +249,8 @@ const rawTasks = [
   {id:"assemble_lego_jet_vs_car",                 approved:100, approvedSecs:272455,  pending:32,  pendingSecs:91936,  rejected:71},
   {id:"assemble_lego_road_plates",                approved:0,   approvedSecs:0,       pending:175, pendingSecs:467216, rejected:1},
   {id:"assemble_lego_year_of_horse",              approved:69,  approvedSecs:209168,  pending:110, pendingSecs:280704, rejected:65},
-  {id:"assemble_little_tikes_hammer_nail",        approved:40,  approvedSecs:113866,  pending:55,  pendingSecs:150334, rejected:19},
-  {id:"assemble_little_tikes_measure_cut",        approved:38,  approvedSecs:103830,  pending:91,  pendingSecs:227451, rejected:39},
+  {id:"assemble_little_tikes_hammer_nail",        approved:40,  approvedSecs:113866,  pending:70,  pendingSecs:189290, rejected:19},
+  {id:"assemble_little_tikes_measure_cut",        approved:40,  approvedSecs:107485,  pending:91,  pendingSecs:227451, rejected:41},
   {id:"assemble_magna_tiles_puppy_park",          approved:56,  approvedSecs:140319,  pending:128, pendingSecs:293457, rejected:33},
   {id:"assemble_magnetic_train_track",            approved:1,   approvedSecs:3362,    pending:155, pendingSecs:361401, rejected:0},
   {id:"assemble_marble_run",                      approved:1,   approvedSecs:3242,    pending:110, pendingSecs:287293, rejected:0},
@@ -267,22 +267,22 @@ const rawTasks = [
   {id:"assemble_veais_kids_set",                  approved:1,   approvedSecs:745,     pending:144, pendingSecs:370474, rejected:0},
   {id:"assemble_vtech_drill_toolbox",             approved:34,  approvedSecs:89582,   pending:113, pendingSecs:305928, rejected:25},
   {id:"assemble_wonder_tiles_city",               approved:66,  approvedSecs:174903,  pending:62,  pendingSecs:161734, rejected:22},
-  {id:"assemble_wooden_train_set",                approved:41,  approvedSecs:111229,  pending:63,  pendingSecs:141052, rejected:36},
+  {id:"assemble_wooden_train_set",                approved:41,  approvedSecs:111229,  pending:109, pendingSecs:275700, rejected:42},
   {id:"assemble_zozoplay_gear_set",               approved:103, approvedSecs:279188,  pending:33,  pendingSecs:83013,  rejected:94},
   // --- Toronto kits ---
-  {id:"assemble_gigglescape_construction_set",    approved:2,   approvedSecs:7065,    pending:0,   pendingSecs:0,      rejected:4},
-  {id:"assemble_montessori_tool_bench",           approved:5,   approvedSecs:14176,   pending:9,   pendingSecs:15856,  rejected:2},
-  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,       pending:1,   pendingSecs:1804,   rejected:0},
-  {id:"assemble_hot_wheels_car",                  approved:1,   approvedSecs:3326,    pending:1,   pendingSecs:1771,   rejected:0},
-  {id:"assemble_gigglescape_train_set",           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
-  {id:"assemble_soft_baby_squishies",             approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
-  {id:"assemble_mega_bloks_big_bag",              approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_gigglescape_construction_set",    approved:2,   approvedSecs:7065,    pending:19,  pendingSecs:60302,  rejected:4},
+  {id:"assemble_montessori_tool_bench",           approved:5,   approvedSecs:14176,   pending:10,  pendingSecs:18488,  rejected:2},
+  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,       pending:11,  pendingSecs:27616,  rejected:3},
+  {id:"assemble_hot_wheels_car",                  approved:2,   approvedSecs:6729,    pending:50,  pendingSecs:122269, rejected:0},
+  {id:"assemble_gigglescape_train_set",           approved:0,   approvedSecs:0,       pending:7,   pendingSecs:19804,  rejected:0},
+  {id:"assemble_soft_baby_squishies",             approved:0,   approvedSecs:0,       pending:39,  pendingSecs:96905,  rejected:5},
+  {id:"assemble_mega_bloks_big_bag",              approved:0,   approvedSecs:0,       pending:63,  pendingSecs:159096, rejected:0},
   {id:"assemble_little_tikes_power_cuts",         approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
-  {id:"assemble_disney_cars_color_changer",       approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
-  {id:"assemble_lehoo_castle_tool_set",           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
-  {id:"assemble_nails",                           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_disney_cars_color_changer",       approved:0,   approvedSecs:0,       pending:43,  pendingSecs:117694, rejected:0},
+  {id:"assemble_lehoo_castle_tool_set",           approved:0,   approvedSecs:0,       pending:42,  pendingSecs:104309, rejected:0},
+  {id:"assemble_nails",                           approved:0,   approvedSecs:0,       pending:7,   pendingSecs:21773,  rejected:0},
   // --- On route to Toronto ---
-  {id:"assemble_iiromeci_gears",                  approved:1,   approvedSecs:3452,    pending:1,   pendingSecs:2997,   rejected:1},
+  {id:"assemble_iiromeci_gears",                  approved:1,   approvedSecs:3452,    pending:13,  pendingSecs:33259,  rejected:1},
   {id:"assemble_tumble_tree_timbers",             approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
 ];
 
