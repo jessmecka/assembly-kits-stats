@@ -94,14 +94,16 @@
       <div class="section-title"><span class="dot dot-red"></span>Needs new recordings</div>
       <table>
         <thead><tr>
-          <th style="width:32%">Task</th>
-          <th class="num" style="width:9%">Approved</th>
-          <th class="num" style="width:9%">Gap to 100</th>
-          <th class="num" style="width:11%">Pending review</th>
-          <th class="num" style="width:8%">Rejected</th>
-          <th class="num" style="width:8%">Rej %</th>
-          <th class="num" style="width:11%">New needed</th>
-          <th class="num" style="width:12%">Est. hrs to record</th>
+          <th style="width:26%">Task</th>
+          <th class="num" style="width:7%">Approved</th>
+          <th class="num" style="width:8%">Approved hrs</th>
+          <th class="num" style="width:7%">Gap to 100</th>
+          <th class="num" style="width:8%">Pending review</th>
+          <th class="num" style="width:8%">Pending hrs</th>
+          <th class="num" style="width:7%">Rejected</th>
+          <th class="num" style="width:6%">Rej %</th>
+          <th class="num" style="width:8%">New needed</th>
+          <th class="num" style="width:9%">Est. hrs to record</th>
         </tr></thead>
         <tbody id="body-urgent"></tbody>
       </table>
@@ -111,13 +113,15 @@
       <div class="section-title"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
       <table>
         <thead><tr>
-          <th style="width:32%">Task</th>
-          <th class="num" style="width:9%">Approved</th>
-          <th class="num" style="width:9%">Gap to 100</th>
-          <th class="num" style="width:11%">Pending review</th>
-          <th class="num" style="width:8%">Rejected</th>
-          <th class="num" style="width:8%">Rej %</th>
-          <th class="num" style="width:23%">Status</th>
+          <th style="width:26%">Task</th>
+          <th class="num" style="width:7%">Approved</th>
+          <th class="num" style="width:8%">Approved hrs</th>
+          <th class="num" style="width:7%">Gap to 100</th>
+          <th class="num" style="width:9%">Pending review</th>
+          <th class="num" style="width:8%">Pending hrs</th>
+          <th class="num" style="width:7%">Rejected</th>
+          <th class="num" style="width:6%">Rej %</th>
+          <th class="num" style="width:14%">Status</th>
         </tr></thead>
         <tbody id="body-watch"></tbody>
       </table>
@@ -128,8 +132,9 @@
       <div class="section-title"><span class="dot dot-teal"></span>Target met</div>
       <table>
         <thead><tr>
-          <th style="width:50%">Task</th>
+          <th style="width:40%">Task</th>
           <th class="num">Approved demos</th>
+          <th class="num">Approved hrs</th>
           <th class="num">Rejection rate</th>
           <th class="num">Status</th>
         </tr></thead>
@@ -174,15 +179,16 @@
     </div>
     <table>
       <thead><tr>
-        <th style="width:24%">Task</th>
-        <th class="num" style="width:8%">Approved</th>
-        <th class="num" style="width:9%">Approved hrs</th>
-        <th class="num" style="width:8%">Hrs / demo</th>
-        <th class="num" style="width:8%">Pending</th>
-        <th class="num" style="width:8%">Rejected</th>
-        <th class="num" style="width:7%">Rej %</th>
-        <th class="num" style="width:10%">Est. hrs needed</th>
-        <th style="width:14%">Progress to 100</th>
+        <th style="width:20%">Task</th>
+        <th class="num" style="width:7%">Approved</th>
+        <th class="num" style="width:8%">Approved hrs</th>
+        <th class="num" style="width:7%">Hrs / demo</th>
+        <th class="num" style="width:6%">Pending</th>
+        <th class="num" style="width:8%">Pending hrs</th>
+        <th class="num" style="width:6%">Rejected</th>
+        <th class="num" style="width:6%">Rej %</th>
+        <th class="num" style="width:9%">Est. hrs needed</th>
+        <th style="width:13%">Progress to 100</th>
       </tr></thead>
       <tbody id="body-breakdown"></tbody>
     </table>
@@ -214,70 +220,70 @@ const ON_ROUTE = new Set([
 
 const rawTasks = [
   // --- Active kits (from MongoDB) ---
-  {id:"assemble_3in1_animals_on_wheels",          approved:104, approvedSecs:255945,  pending:0,   rejected:29},
-  {id:"assemble_aolew_erector_set",               approved:51,  approvedSecs:142307,  pending:89,  rejected:84},
-  {id:"assemble_apluses_magnetic_blocks",         approved:28,  approvedSecs:78312,   pending:161, rejected:10},
-  {id:"assemble_basytodio_blocks",                approved:1,   approvedSecs:2516,    pending:84,  rejected:0},
-  {id:"assemble_battat_toy_plane",                approved:38,  approvedSecs:109919,  pending:141, rejected:29},
-  {id:"assemble_bluey_family_house",              approved:69,  approvedSecs:176022,  pending:81,  rejected:12},
-  {id:"assemble_bracelet_kit",                    approved:22,  approvedSecs:57772,   pending:153, rejected:33},
-  {id:"assemble_btoys_oven",                      approved:1,   approvedSecs:3477,    pending:157, rejected:0},
-  {id:"assemble_cars_3_mcqueen_kit",              approved:69,  approvedSecs:185470,  pending:69,  rejected:11},
-  {id:"assemble_coogam_racing_car",               approved:47,  approvedSecs:116659,  pending:135, rejected:26},
-  {id:"assemble_dekilea_gear_blocks",             approved:17,  approvedSecs:42243,   pending:92,  rejected:13},
-  {id:"assemble_design_gears_workshop",           approved:33,  approvedSecs:96698,   pending:96,  rejected:7},
-  {id:"assemble_design_robot",                    approved:44,  approvedSecs:130621,  pending:144, rejected:27},
-  {id:"assemble_dinosaur_toy",                    approved:0,   approvedSecs:0,       pending:160, rejected:1},
-  {id:"assemble_disney_cars_copper_canyon",       approved:53,  approvedSecs:127726,  pending:95,  rejected:21},
-  {id:"assemble_fire_truck",                      approved:55,  approvedSecs:138018,  pending:135, rejected:26},
-  {id:"assemble_fyd_jeep",                        approved:5,   approvedSecs:4993,    pending:181, rejected:2},
-  {id:"assemble_hape_drive_car",                  approved:79,  approvedSecs:203664,  pending:58,  rejected:17},
-  {id:"assemble_haptime_design_set",              approved:1,   approvedSecs:3746,    pending:176, rejected:0},
-  {id:"assemble_kids_first_robot_factory",        approved:29,  approvedSecs:72074,   pending:94,  rejected:7},
-  {id:"assemble_lacchoufee_tool_box_1",           approved:84,  approvedSecs:245087,  pending:120, rejected:26},
-  {id:"assemble_lacchoufee_tool_box_2",           approved:11,  approvedSecs:30447,   pending:143, rejected:11},
-  {id:"assemble_laugh_learn_coffee_cafe",         approved:18,  approvedSecs:51330,   pending:158, rejected:36},
-  {id:"assemble_lego_angel_stitch_brick_headz",   approved:54,  approvedSecs:148030,  pending:121, rejected:72},
-  {id:"assemble_lego_duplo_cake",                 approved:55,  approvedSecs:147336,  pending:130, rejected:16},
-  {id:"assemble_lego_duplo_garden",               approved:72,  approvedSecs:191736,  pending:86,  rejected:38},
-  {id:"assemble_lego_jet_vs_car",                 approved:100, approvedSecs:272455,  pending:32,  rejected:71},
-  {id:"assemble_lego_road_plates",                approved:0,   approvedSecs:0,       pending:175, rejected:1},
-  {id:"assemble_lego_year_of_horse",              approved:69,  approvedSecs:209168,  pending:110, rejected:65},
-  {id:"assemble_little_tikes_hammer_nail",        approved:40,  approvedSecs:113866,  pending:55,  rejected:19},
-  {id:"assemble_little_tikes_measure_cut",        approved:38,  approvedSecs:103830,  pending:91,  rejected:39},
-  {id:"assemble_magna_tiles_puppy_park",          approved:56,  approvedSecs:140319,  pending:128, rejected:33},
-  {id:"assemble_magnetic_train_track",            approved:1,   approvedSecs:3362,    pending:155, rejected:0},
-  {id:"assemble_marble_run",                      approved:1,   approvedSecs:3242,    pending:110, rejected:0},
-  {id:"assemble_melissa_doug_sandwich_counter",   approved:52,  approvedSecs:148670,  pending:119, rejected:14},
-  {id:"assemble_motor_works_vehicles",            approved:51,  approvedSecs:144671,  pending:50,  rejected:27},
-  {id:"assemble_mould_king_v8_kit",               approved:45,  approvedSecs:113320,  pending:95,  rejected:43},
-  {id:"assemble_mould_king_v8_model",             approved:8,   approvedSecs:23972,   pending:120, rejected:23},
-  {id:"assemble_ooze_labs_chemistry",             approved:58,  approvedSecs:146799,  pending:133, rejected:10},
-  {id:"assemble_play_dinos",                      approved:52,  approvedSecs:151680,  pending:59,  rejected:18},
-  {id:"assemble_pup_go_car",                      approved:70,  approvedSecs:198519,  pending:94,  rejected:33},
-  {id:"assemble_remote_control_gear_bot",         approved:59,  approvedSecs:162632,  pending:114, rejected:19},
-  {id:"assemble_retro_car",                       approved:101, approvedSecs:271421,  pending:21,  rejected:74},
-  {id:"assemble_tonze_kids_tool_bench",           approved:69,  approvedSecs:198508,  pending:60,  rejected:27},
-  {id:"assemble_veais_kids_set",                  approved:1,   approvedSecs:745,     pending:144, rejected:0},
-  {id:"assemble_vtech_drill_toolbox",             approved:34,  approvedSecs:89582,   pending:113, rejected:25},
-  {id:"assemble_wonder_tiles_city",               approved:66,  approvedSecs:174903,  pending:62,  rejected:22},
-  {id:"assemble_wooden_train_set",                approved:41,  approvedSecs:111229,  pending:63,  rejected:36},
-  {id:"assemble_zozoplay_gear_set",               approved:103, approvedSecs:279188,  pending:33,  rejected:94},
+  {id:"assemble_3in1_animals_on_wheels",          approved:104, approvedSecs:255945,  pending:0,   pendingSecs:0,      rejected:29},
+  {id:"assemble_aolew_erector_set",               approved:51,  approvedSecs:142307,  pending:89,  pendingSecs:248321, rejected:84},
+  {id:"assemble_apluses_magnetic_blocks",         approved:28,  approvedSecs:78312,   pending:161, pendingSecs:376664, rejected:10},
+  {id:"assemble_basytodio_blocks",                approved:1,   approvedSecs:2516,    pending:84,  pendingSecs:219245, rejected:0},
+  {id:"assemble_battat_toy_plane",                approved:38,  approvedSecs:109919,  pending:141, pendingSecs:353239, rejected:29},
+  {id:"assemble_bluey_family_house",              approved:69,  approvedSecs:176022,  pending:81,  pendingSecs:204216, rejected:12},
+  {id:"assemble_bracelet_kit",                    approved:22,  approvedSecs:57772,   pending:153, pendingSecs:418934, rejected:33},
+  {id:"assemble_btoys_oven",                      approved:1,   approvedSecs:3477,    pending:157, pendingSecs:383496, rejected:0},
+  {id:"assemble_cars_3_mcqueen_kit",              approved:69,  approvedSecs:185470,  pending:69,  pendingSecs:174439, rejected:11},
+  {id:"assemble_coogam_racing_car",               approved:47,  approvedSecs:116659,  pending:135, pendingSecs:372842, rejected:26},
+  {id:"assemble_dekilea_gear_blocks",             approved:17,  approvedSecs:42243,   pending:92,  pendingSecs:258907, rejected:13},
+  {id:"assemble_design_gears_workshop",           approved:33,  approvedSecs:96698,   pending:96,  pendingSecs:235215, rejected:7},
+  {id:"assemble_design_robot",                    approved:44,  approvedSecs:130621,  pending:144, pendingSecs:379382, rejected:27},
+  {id:"assemble_dinosaur_toy",                    approved:0,   approvedSecs:0,       pending:160, pendingSecs:345235, rejected:1},
+  {id:"assemble_disney_cars_copper_canyon",       approved:53,  approvedSecs:127726,  pending:95,  pendingSecs:261409, rejected:21},
+  {id:"assemble_fire_truck",                      approved:55,  approvedSecs:138018,  pending:135, pendingSecs:348195, rejected:26},
+  {id:"assemble_fyd_jeep",                        approved:5,   approvedSecs:4993,    pending:181, pendingSecs:462830, rejected:2},
+  {id:"assemble_hape_drive_car",                  approved:79,  approvedSecs:203664,  pending:58,  pendingSecs:144956, rejected:17},
+  {id:"assemble_haptime_design_set",              approved:1,   approvedSecs:3746,    pending:176, pendingSecs:499884, rejected:0},
+  {id:"assemble_kids_first_robot_factory",        approved:29,  approvedSecs:72074,   pending:94,  pendingSecs:255744, rejected:7},
+  {id:"assemble_lacchoufee_tool_box_1",           approved:84,  approvedSecs:245087,  pending:120, pendingSecs:250025, rejected:26},
+  {id:"assemble_lacchoufee_tool_box_2",           approved:11,  approvedSecs:30447,   pending:143, pendingSecs:358914, rejected:11},
+  {id:"assemble_laugh_learn_coffee_cafe",         approved:18,  approvedSecs:51330,   pending:158, pendingSecs:442775, rejected:36},
+  {id:"assemble_lego_angel_stitch_brick_headz",   approved:54,  approvedSecs:148030,  pending:121, pendingSecs:333193, rejected:72},
+  {id:"assemble_lego_duplo_cake",                 approved:55,  approvedSecs:147336,  pending:130, pendingSecs:317879, rejected:16},
+  {id:"assemble_lego_duplo_garden",               approved:72,  approvedSecs:191736,  pending:86,  pendingSecs:199042, rejected:38},
+  {id:"assemble_lego_jet_vs_car",                 approved:100, approvedSecs:272455,  pending:32,  pendingSecs:91936,  rejected:71},
+  {id:"assemble_lego_road_plates",                approved:0,   approvedSecs:0,       pending:175, pendingSecs:467216, rejected:1},
+  {id:"assemble_lego_year_of_horse",              approved:69,  approvedSecs:209168,  pending:110, pendingSecs:280704, rejected:65},
+  {id:"assemble_little_tikes_hammer_nail",        approved:40,  approvedSecs:113866,  pending:55,  pendingSecs:150334, rejected:19},
+  {id:"assemble_little_tikes_measure_cut",        approved:38,  approvedSecs:103830,  pending:91,  pendingSecs:227451, rejected:39},
+  {id:"assemble_magna_tiles_puppy_park",          approved:56,  approvedSecs:140319,  pending:128, pendingSecs:293457, rejected:33},
+  {id:"assemble_magnetic_train_track",            approved:1,   approvedSecs:3362,    pending:155, pendingSecs:361401, rejected:0},
+  {id:"assemble_marble_run",                      approved:1,   approvedSecs:3242,    pending:110, pendingSecs:287293, rejected:0},
+  {id:"assemble_melissa_doug_sandwich_counter",   approved:52,  approvedSecs:148670,  pending:119, pendingSecs:275597, rejected:14},
+  {id:"assemble_motor_works_vehicles",            approved:51,  approvedSecs:144671,  pending:50,  pendingSecs:133852, rejected:27},
+  {id:"assemble_mould_king_v8_kit",               approved:45,  approvedSecs:113320,  pending:95,  pendingSecs:270482, rejected:43},
+  {id:"assemble_mould_king_v8_model",             approved:8,   approvedSecs:23972,   pending:120, pendingSecs:310818, rejected:23},
+  {id:"assemble_ooze_labs_chemistry",             approved:58,  approvedSecs:146799,  pending:133, pendingSecs:326779, rejected:10},
+  {id:"assemble_play_dinos",                      approved:52,  approvedSecs:151680,  pending:59,  pendingSecs:159605, rejected:18},
+  {id:"assemble_pup_go_car",                      approved:70,  approvedSecs:198519,  pending:94,  pendingSecs:252141, rejected:33},
+  {id:"assemble_remote_control_gear_bot",         approved:59,  approvedSecs:162632,  pending:114, pendingSecs:291936, rejected:19},
+  {id:"assemble_retro_car",                       approved:101, approvedSecs:271421,  pending:21,  pendingSecs:41383,  rejected:74},
+  {id:"assemble_tonze_kids_tool_bench",           approved:69,  approvedSecs:198508,  pending:60,  pendingSecs:171982, rejected:27},
+  {id:"assemble_veais_kids_set",                  approved:1,   approvedSecs:745,     pending:144, pendingSecs:370474, rejected:0},
+  {id:"assemble_vtech_drill_toolbox",             approved:34,  approvedSecs:89582,   pending:113, pendingSecs:305928, rejected:25},
+  {id:"assemble_wonder_tiles_city",               approved:66,  approvedSecs:174903,  pending:62,  pendingSecs:161734, rejected:22},
+  {id:"assemble_wooden_train_set",                approved:41,  approvedSecs:111229,  pending:63,  pendingSecs:141052, rejected:36},
+  {id:"assemble_zozoplay_gear_set",               approved:103, approvedSecs:279188,  pending:33,  pendingSecs:83013,  rejected:94},
   // --- Toronto kits ---
-  {id:"assemble_gigglescape_construction_set",    approved:2,   approvedSecs:7065,    pending:0,   rejected:4},
-  {id:"assemble_montessori_tool_bench",           approved:5,   approvedSecs:14176,   pending:9,   rejected:2},
-  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,       pending:1,   rejected:0},
-  {id:"assemble_hot_wheels_car",                  approved:1,   approvedSecs:3326,    pending:1,   rejected:0},
-  {id:"assemble_gigglescape_train_set",           approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_soft_baby_squishies",             approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_mega_bloks_big_bag",              approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_little_tikes_power_cuts",         approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_disney_cars_color_changer",       approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_lehoo_castle_tool_set",           approved:0,   approvedSecs:0,       pending:0,   rejected:0},
-  {id:"assemble_nails",                           approved:0,   approvedSecs:0,       pending:0,   rejected:0},
+  {id:"assemble_gigglescape_construction_set",    approved:2,   approvedSecs:7065,    pending:0,   pendingSecs:0,      rejected:4},
+  {id:"assemble_montessori_tool_bench",           approved:5,   approvedSecs:14176,   pending:9,   pendingSecs:15856,  rejected:2},
+  {id:"assemble_3in1_dinosaurs_on_wheels",        approved:0,   approvedSecs:0,       pending:1,   pendingSecs:1804,   rejected:0},
+  {id:"assemble_hot_wheels_car",                  approved:1,   approvedSecs:3326,    pending:1,   pendingSecs:1771,   rejected:0},
+  {id:"assemble_gigglescape_train_set",           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_soft_baby_squishies",             approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_mega_bloks_big_bag",              approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_little_tikes_power_cuts",         approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_disney_cars_color_changer",       approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_lehoo_castle_tool_set",           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
+  {id:"assemble_nails",                           approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
   // --- On route to Toronto ---
-  {id:"assemble_iiromeci_gears",                  approved:1,   approvedSecs:3452,    pending:1,   rejected:1},
-  {id:"assemble_tumble_tree_timbers",             approved:0,   approvedSecs:0,       pending:0,   rejected:0},
+  {id:"assemble_iiromeci_gears",                  approved:1,   approvedSecs:3452,    pending:1,   pendingSecs:2997,   rejected:1},
+  {id:"assemble_tumble_tree_timbers",             approved:0,   approvedSecs:0,       pending:0,   pendingSecs:0,      rejected:0},
 ];
 
 const TARGET = 100;
@@ -295,12 +301,13 @@ const data = rawTasks.map(t => {
   const gap = Math.max(0, TARGET - t.approved);
   const newNeeded = onRoute ? 0 : Math.max(0, gap - t.pending);
   const approvedHrs = t.approvedSecs / 3600;
+  const pendingHrs = t.pendingSecs / 3600;
   const hpd = t.approved > 0 ? approvedHrs / t.approved : null;
   const reviewed = t.approved + t.rejected;
   const rejPct = reviewed > 0 ? (t.rejected / reviewed) * 100 : null;
   const estHrsNeeded = onRoute ? null : newNeeded > 0 ? newNeeded * (hpd || avgHpd) : 0;
   const hasRecordings = (t.approved + t.pending + t.rejected) > 0;
-  return { ...t, label, onRoute, location, gap, newNeeded, approvedHrs, hpd, rejPct, estHrsNeeded, hasRecordings };
+  return { ...t, label, onRoute, location, gap, newNeeded, approvedHrs, pendingHrs, hpd, rejPct, estHrsNeeded, hasRecordings };
 });
 
 // Split on-route vs active
@@ -364,8 +371,10 @@ document.getElementById('body-urgent').innerHTML = needNew.map(r => `
   <tr>
     <td>${r.label}${locBadge(r.location)}</td>
     <td class="num">${r.approved}</td>
+    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.gap}</td>
     <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
+    <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="num-big ${r.newNeeded >= 70 ? 'needs-high' : r.newNeeded >= 30 ? 'needs-mid' : 'needs-low'}">${r.newNeeded}</span></td>
@@ -376,8 +385,10 @@ document.getElementById('body-watch').innerHTML = watch.map(r => `
   <tr>
     <td>${r.label}${locBadge(r.location)}</td>
     <td class="num">${r.approved}</td>
+    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.gap}</td>
     <td class="num">${r.pending}</td>
+    <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="badge b-watch">Monitor pending</span></td>
@@ -387,6 +398,7 @@ document.getElementById('body-done').innerHTML = done.map(r => `
   <tr>
     <td>${r.label}${locBadge(r.location)}</td>
     <td class="num">${r.approved}</td>
+    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="badge b-teal">Complete</span></td>
   </tr>`).join('');
@@ -426,6 +438,7 @@ function renderBreakdown() {
       <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1) : '—'}</td>
       <td class="num muted">${r.hpd !== null ? r.hpd.toFixed(2)+'h' : '—'}</td>
       <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
+      <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1) : '—'}</td>
       <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
       <td class="num ${rejClass(r.rejPct)}">${r.rejPct !== null ? r.rejPct.toFixed(0)+'%' : '—'}</td>
       ${estCell}
