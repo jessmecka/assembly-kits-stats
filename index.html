@@ -250,31 +250,31 @@
 
 <script>
 // Kits being recorded in Toronto (Studio - Toronto + Z - Basil & Jerrin Duo)
+// Exactly 13 kits physically available to Toronto for recording
 const TORONTO = new Set([
-  "assemble_gigglescape_construction_set",
-  "assemble_3in1_dinosaurs_on_wheels",
   "assemble_disney_cars_color_changer",
   "assemble_gigglescape_train_set",
   "assemble_soft_baby_squishies",
-  "assemble_hot_wheels_car",
   "assemble_mega_bloks_big_bag",
-  "assemble_montessori_tool_bench",
   "assemble_little_tikes_power_cuts",
   "assemble_lehoo_castle_tool_set",
   "assemble_nails",
-  "assemble_iiromeci_gears",
   "assemble_tumble_tree_timbers",
-  "assemble_little_tikes_hammer_nail",    // confirmed in Toronto project
+  "assemble_3in1_dinosaurs_on_wheels",
+  "assemble_hot_wheels_car",
+  "assemble_iiromeci_gears",
+  "assemble_gigglescape_construction_set",
+  "assemble_montessori_tool_bench",
 ]);
 
 // Kits on route to Toronto — unavailable for recording
 const ON_ROUTE = new Set([]);
 
-// Tasks recorded by Toronto groups under the wrong task/project
-// These have a metadata risk — wrong task or project assignment
+// Any Toronto recording outside the 13 canonical kits is physically impossible → wrong metadata
 const METADATA_RISK = new Set([
-  "assemble_tonze_kids_tool_bench",
-  "assemble_3in1_animals_on_wheels",   // Toronto recordings likely belong to assemble_3in1_dinosaurs_on_wheels
+  "assemble_3in1_animals_on_wheels",       // likely misfiled as dinosaurs_on_wheels
+  "assemble_little_tikes_hammer_nail",     // Toronto doesn't have this kit
+  "assemble_tonze_kids_tool_bench",        // Toronto recorded under wrong project (MC+CWC Exclusive)
 ]);
 
 // Per-task recordings from Studio - Toronto + Z - Basil & Jerrin Duo
@@ -289,7 +289,7 @@ const torontoRecordings = {
   "assemble_hot_wheels_car":                {pending:68, pendingSecs:173819, validated:1, validatedSecs:3403,  rejected:0,  rejectedSecs:0},
   "assemble_iiromeci_gears":                {pending:82, pendingSecs:217057, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_lehoo_castle_tool_set":         {pending:70, pendingSecs:173950, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
-  "assemble_little_tikes_hammer_nail":      {pending:15, pendingSecs:38956,  validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
+  // assemble_little_tikes_hammer_nail: Toronto doesn't have this kit → see metadataRiskData
   "assemble_little_tikes_power_cuts":       {pending:1,  pendingSecs:1285,   validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_mega_bloks_big_bag":            {pending:88, pendingSecs:230759, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_montessori_tool_bench":         {pending:31, pendingSecs:81737,  validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
@@ -298,21 +298,28 @@ const torontoRecordings = {
   "assemble_tumble_tree_timbers":           {pending:0,  pendingSecs:0,      validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
 };
 
-// Metadata risk recordings (Toronto groups, wrong task or project)
+// Any Toronto recording outside the 13 canonical kits is physically impossible — wrong metadata
 const metadataRiskData = [
   {
     id: "assemble_3in1_animals_on_wheels",
     pending: 43, pendingSecs: 112730,
     validated: 1, validatedSecs: 2089,
     rejected: 1, rejectedSecs: 2683,
-    issue: "Recorded by Toronto groups but assemble_3in1_animals_on_wheels is a Longhua task. These 45 recordings (43 pending, 1 validated, 1 rejected) likely belong to assemble_3in1_dinosaurs_on_wheels."
+    issue: "Toronto doesn't have this kit. 45 recordings (43 pending, 1 validated, 1 rejected) likely belong to assemble_3in1_dinosaurs_on_wheels — wrong task metadata."
+  },
+  {
+    id: "assemble_little_tikes_hammer_nail",
+    pending: 15, pendingSecs: 38956,
+    validated: 0, validatedSecs: 0,
+    rejected: 0, rejectedSecs: 0,
+    issue: "Toronto doesn't have this kit. 15 pending recordings cannot have been made by Toronto groups — wrong task metadata."
   },
   {
     id: "assemble_tonze_kids_tool_bench",
     pending: 3, pendingSecs: 8460,
     validated: 0, validatedSecs: 0,
     rejected: 0, rejectedSecs: 0,
-    issue: "Recorded by Toronto groups under Longhua project (MC+CWC Exclusive). Expected project: Mono+Insta360 WC. Verify task template assignment."
+    issue: "Toronto doesn't have this kit (Longhua-only, MC+CWC Exclusive project). 3 pending recordings — wrong task and project metadata."
   },
 ];
 
