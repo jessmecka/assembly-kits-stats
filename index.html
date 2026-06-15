@@ -232,10 +232,12 @@
       <div class="risk-header">⚠ Metadata risk — recorded by Toronto groups under wrong project</div>
       <table style="border-top: 0.5px solid #f5c8a8;">
         <thead><tr>
-          <th style="width:30%">Task</th>
-          <th class="num" style="width:10%">Recordings</th>
-          <th class="num" style="width:10%">Hours</th>
-          <th style="width:50%">Issue</th>
+          <th style="width:28%">Task</th>
+          <th class="num" style="width:8%">Pending</th>
+          <th class="num" style="width:8%">Validated</th>
+          <th class="num" style="width:8%">Rejected</th>
+          <th class="num" style="width:8%">Total hrs</th>
+          <th style="width:40%">Issue</th>
         </tr></thead>
         <tbody id="body-risk"></tbody>
       </table>
@@ -262,25 +264,25 @@ const TORONTO = new Set([
   "assemble_nails",
   "assemble_iiromeci_gears",
   "assemble_tumble_tree_timbers",
-  "assemble_3in1_animals_on_wheels",      // confirmed in Toronto project
   "assemble_little_tikes_hammer_nail",    // confirmed in Toronto project
 ]);
 
 // Kits on route to Toronto — unavailable for recording
 const ON_ROUTE = new Set([]);
 
-// Tasks recorded by Toronto groups under the Longhua project (MC+CWC Exclusive)
-// These have a metadata risk — wrong project assignment
+// Tasks recorded by Toronto groups under the wrong task/project
+// These have a metadata risk — wrong task or project assignment
 const METADATA_RISK = new Set([
   "assemble_tonze_kids_tool_bench",
+  "assemble_3in1_animals_on_wheels",   // Toronto recordings likely belong to assemble_3in1_dinosaurs_on_wheels
 ]);
 
 // Per-task recordings from Studio - Toronto + Z - Basil & Jerrin Duo
 // Source: mecka-ai user_tasks, both project IDs, grouped by userGroupId
 // Updated: June 15, 2026 at 10:18 PM CST
 const torontoRecordings = {
-  "assemble_3in1_animals_on_wheels":        {pending:43, pendingSecs:112730, validated:1, validatedSecs:2089,  rejected:1,  rejectedSecs:2683},
-  "assemble_3in1_dinosaurs_on_wheels":      {pending:48, pendingSecs:136538, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
+  // assemble_3in1_animals_on_wheels is Longhua-only; its Toronto recordings are misfiled → see metadataRiskData
+  "assemble_3in1_dinosaurs_on_wheels":      {pending:91, pendingSecs:249268, validated:1, validatedSecs:2089,  rejected:1,  rejectedSecs:2683},
   "assemble_disney_cars_color_changer":     {pending:68, pendingSecs:184689, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_gigglescape_construction_set":  {pending:35, pendingSecs:110734, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_gigglescape_train_set":         {pending:7,  pendingSecs:19804,  validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
@@ -296,12 +298,20 @@ const torontoRecordings = {
   "assemble_tumble_tree_timbers":           {pending:0,  pendingSecs:0,      validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
 };
 
-// Metadata risk recordings (Toronto groups, wrong project)
+// Metadata risk recordings (Toronto groups, wrong task or project)
 const metadataRiskData = [
   {
+    id: "assemble_3in1_animals_on_wheels",
+    pending: 43, pendingSecs: 112730,
+    validated: 1, validatedSecs: 2089,
+    rejected: 1, rejectedSecs: 2683,
+    issue: "Recorded by Toronto groups but assemble_3in1_animals_on_wheels is a Longhua task. These 45 recordings (43 pending, 1 validated, 1 rejected) likely belong to assemble_3in1_dinosaurs_on_wheels."
+  },
+  {
     id: "assemble_tonze_kids_tool_bench",
-    pending: 3,
-    pendingSecs: 8460,
+    pending: 3, pendingSecs: 8460,
+    validated: 0, validatedSecs: 0,
+    rejected: 0, rejectedSecs: 0,
     issue: "Recorded by Toronto groups under Longhua project (MC+CWC Exclusive). Expected project: Mono+Insta360 WC. Verify task template assignment."
   },
 ];
@@ -427,7 +437,7 @@ document.getElementById('toronto-cards').innerHTML = `
   <div class="card toronto-card"><div class="val">${(torTotalSecs/3600).toFixed(0)}h</div><div class="lbl">Total hours recorded (submitted)</div></div>
   <div class="card toronto-card"><div class="val">${(torPendingSecs/3600).toFixed(0)}h</div><div class="lbl">Pending review · ${torPending} recordings</div></div>
   <div class="card toronto-card"><div class="val">${torValidated}</div><div class="lbl">Validated demos so far</div></div>
-  <div class="card toronto-card warn"><div class="val">${metadataRiskData.reduce((s,r)=>s+r.pending,0)} recordings</div><div class="lbl">⚠ Metadata risk (wrong project)</div></div>
+  <div class="card toronto-card warn"><div class="val">${metadataRiskData.reduce((s,r)=>s+r.pending+(r.validated||0)+(r.rejected||0),0)} recordings</div><div class="lbl">⚠ Metadata risk (wrong task/project)</div></div>
 `;
 
 // Helpers
@@ -570,13 +580,17 @@ document.getElementById('body-toronto').innerHTML = torRows.map(([id, t]) => {
   </tr>`;
 }).join('');
 
-document.getElementById('body-risk').innerHTML = metadataRiskData.map(r => `
-  <tr class="risk-row">
+document.getElementById('body-risk').innerHTML = metadataRiskData.map(r => {
+  const totalSecs = r.pendingSecs + r.validatedSecs + r.rejectedSecs;
+  return `<tr class="risk-row">
     <td>${r.id} <span class="badge b-risk">⚠ metadata risk</span></td>
-    <td class="num">${r.pending}</td>
-    <td class="num muted">${(r.pendingSecs/3600).toFixed(1)}h</td>
+    <td class="num">${r.pending > 0 ? r.pending : '—'}</td>
+    <td class="num">${r.validated > 0 ? `<strong>${r.validated}</strong>` : '—'}</td>
+    <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
+    <td class="num muted">${(totalSecs/3600).toFixed(1)}h</td>
     <td style="font-size:11px;color:#7a3a10">${r.issue}</td>
-  </tr>`).join('');
+  </tr>`;
+}).join('');
 
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
