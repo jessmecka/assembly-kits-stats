@@ -84,6 +84,7 @@
   .updated { font-size: 11px; color: #888780; margin-top: 1.5rem; text-align: right; }
 
   .risk-header { font-size: 12px; font-weight: 500; color: #8B3A0F; padding: 10px 12px; background: #FEF6F0; border: 0.5px solid #f5c8a8; border-radius: 8px 8px 0 0; border-bottom: none; display: flex; align-items: center; gap: 6px; }
+  .count-pill { font-size: 11px; font-weight: 400; color: #fff; background: #888780; border-radius: 10px; padding: 1px 7px; margin-left: 6px; }
 </style>
 </head>
 <body>
@@ -104,7 +105,7 @@
   <!-- TAB 1 -->
   <div class="tab-panel active" id="tab-recordings">
     <div class="section">
-      <div class="section-title"><span class="dot dot-red"></span>Needs new recordings</div>
+      <div class="section-title" id="title-urgent"><span class="dot dot-red"></span>Needs new recordings</div>
       <table>
         <thead><tr>
           <th style="width:26%">Task</th>
@@ -123,7 +124,7 @@
     </div>
 
     <div class="section">
-      <div class="section-title"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
+      <div class="section-title" id="title-watch"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
       <table>
         <thead><tr>
           <th style="width:26%">Task</th>
@@ -142,7 +143,7 @@
     </div>
 
     <div class="section">
-      <div class="section-title"><span class="dot dot-teal"></span>Target met</div>
+      <div class="section-title" id="title-done"><span class="dot dot-teal"></span>Target met</div>
       <table>
         <thead><tr>
           <th style="width:40%">Task</th>
@@ -474,6 +475,11 @@ function rowClass(r) {
   if (r.isRisk)  return ' class="risk-row"';
   return '';
 }
+
+// Section header counts
+document.getElementById('title-urgent').innerHTML += `<span class="count-pill">${needNew.length}</span>`;
+document.getElementById('title-watch').innerHTML  += `<span class="count-pill">${watch.length}</span>`;
+document.getElementById('title-done').innerHTML   += `<span class="count-pill">${done.length}</span>`;
 
 // Tab 1 — urgent
 document.getElementById('body-urgent').innerHTML = needNew.map(r => `
