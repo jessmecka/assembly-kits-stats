@@ -11,7 +11,7 @@
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
   .subtitle { font-size: 12px; color: #888780; margin-bottom: 2rem; }
 
-  .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 10px; margin-bottom: 1rem; }
+  .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 1rem; }
   .cards-toronto { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2.5rem; }
   .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 10px; padding: 14px 16px; }
   .card .val { font-size: 22px; font-weight: 500; margin-bottom: 3px; }
@@ -415,6 +415,7 @@ const active  = data.filter(d => !d.onRoute);
 const onRoute = data.filter(d => d.onRoute);
 
 const totalApproved = active.reduce((s,d) => s + d.approved, 0);
+const totalApprovedHrs = active.reduce((s,d) => s + d.approvedHrs, 0);
 const totalRejected = active.reduce((s,d) => s + d.rejected, 0);
 const overallRejPct = (totalApproved + totalRejected) > 0
   ? (totalRejected / (totalApproved + totalRejected) * 100).toFixed(1) : '0.0';
@@ -429,6 +430,7 @@ document.getElementById('summary-cards').innerHTML = `
   <div class="card"><div class="val">${totalNew}</div><div class="lbl">New recordings to schedule</div></div>
   <div class="card"><div class="val">${totalEstHrs.toFixed(0)}h</div><div class="lbl">Est. recording hours needed</div></div>
   <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved demos</div></div>
+  <div class="card"><div class="val">${Math.round(totalApprovedHrs).toLocaleString()}h</div><div class="lbl">Total approved hours (deliverable)</div></div>
   <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Overall rejection rate (of reviewed)</div></div>
 `;
 
