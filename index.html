@@ -14,7 +14,7 @@
   .methodology { font-size: 11.5px; color: #3B5D8B; background: #EEF3FC; border: 0.5px solid #c9dafb; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.5rem; line-height: 1.5; }
   .methodology strong { color: #1a3a6b; }
 
-  .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 1rem; }
+  .cards { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-bottom: 1rem; }
   .cards-toronto { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2.5rem; }
   .card { background: #fff; border: 0.5px solid #d3d1c7; border-radius: 10px; padding: 14px 16px; }
   .card .val { font-size: 22px; font-weight: 500; margin-bottom: 3px; }
@@ -93,7 +93,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved cycles per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 06:34 AM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved cycles per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 06:55 AM CST</p>
 
   <p class="methodology"><strong>Methodology (updated):</strong> "Approved" now counts individual good-verdict build <strong>cycles</strong> (one full kit build = one reviewed <code>segmentReviews</code> entry, ≥60s, from the latest review session per recording) — not whole recordings. A single ~45-min recording typically contains 8–11 cycles, so these numbers are much higher than a recording count. Cycles are only counted from recordings whose overall review status is <strong>approved</strong> (good builds inside rejected recordings are excluded — contested pool, not yet spot-checked). "Rejected" and "Rej %" are recording-level QA outcomes. "Pending" is unreviewed recordings awaiting review (no cycle data yet). Source: <code>qa_usertask_review_sessions.segmentReviews</code> + <code>user_tasks</code>, mecka-ai MongoDB (Longhua + Toronto).</p>
 
@@ -150,9 +150,10 @@
       <div class="section-title" id="title-done"><span class="dot dot-teal"></span>Target met</div>
       <table>
         <thead><tr>
-          <th style="width:36%">Task</th>
+          <th style="width:30%">Task</th>
           <th class="num">Approved cycles</th>
           <th class="num">Cycle hrs</th>
+          <th class="num">Time / demo</th>
           <th class="num">Approved recordings</th>
           <th class="num">Rejection rate</th>
           <th class="num">Status</th>
@@ -184,6 +185,7 @@
         <option value="needed">Gap to 100 ↓</option>
         <option value="rejpct">Rejection rate ↓</option>
         <option value="cpr">Cycles / recording ↓</option>
+        <option value="tpd">Time / demo ↓</option>
         <option value="esthrs">Est. hrs needed ↓</option>
         <option value="name">Task name A–Z</option>
       </select>
@@ -198,16 +200,17 @@
     </div>
     <table>
       <thead><tr>
-        <th style="width:18%">Task</th>
+        <th style="width:14%">Task</th>
         <th class="num" style="width:8%">Approved cycles</th>
-        <th class="num" style="width:8%">Cycle hrs</th>
+        <th class="num" style="width:7%">Cycle hrs</th>
+        <th class="num" style="width:7%">Time / demo</th>
         <th class="num" style="width:7%">Cycles / rec</th>
-        <th class="num" style="width:7%">Approved recs</th>
-        <th class="num" style="width:6%">Pending recs</th>
-        <th class="num" style="width:6%">Rejected recs</th>
+        <th class="num" style="width:6%">Approved recs</th>
+        <th class="num" style="width:5%">Pending recs</th>
+        <th class="num" style="width:5%">Rejected recs</th>
         <th class="num" style="width:6%">Rej %</th>
-        <th class="num" style="width:9%">Est. hrs needed</th>
-        <th style="width:13%">Progress to 100</th>
+        <th class="num" style="width:8%">Est. hrs needed</th>
+        <th style="width:11%">Progress to 100</th>
       </tr></thead>
       <tbody id="body-breakdown"></tbody>
     </table>
@@ -251,7 +254,7 @@
     </div>
   </div>
 
-  <p class="updated">Last updated: July 02, 2026 at 06:34 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
+  <p class="updated">Last updated: July 02, 2026 at 06:55 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
 </div>
 
 <script>
@@ -419,7 +422,9 @@ const data = rawTasks.map(t => {
   const estHrsNeeded = recordingsNeeded > 0 ? recordingsNeeded * effHrsPerRec : 0;
   const reviewed = t.approvedRecordings + t.rejectedRecordings;
   const rejPct   = reviewed > 0 ? (t.rejectedRecordings / reviewed) * 100 : null;
-  return { ...t, onRoute, isRisk, location, gap, approvedHrs, pendingHrs, cyclesPerRec, expectedFromPending, recordingsNeeded, estHrsNeeded, rejPct };
+  // Time per demo = avg duration of a single approved CYCLE (build), not a whole recording.
+  const timePerDemoSecs = t.approved > 0 ? t.approvedSecs / t.approved : null;
+  return { ...t, onRoute, isRisk, location, gap, approvedHrs, pendingHrs, cyclesPerRec, timePerDemoSecs, expectedFromPending, recordingsNeeded, estHrsNeeded, rejPct };
 });
 
 const active  = data.filter(d => !d.onRoute);
@@ -436,6 +441,8 @@ const needNew = active.filter(d => d.approved < TARGET && d.recordingsNeeded > 0
 const watch   = active.filter(d => d.approved < TARGET && d.recordingsNeeded === 0).sort((a,b) => b.gap - a.gap);
 const totalRecordingsNeeded = needNew.reduce((s,d) => s + d.recordingsNeeded, 0);
 const totalEstHrs  = needNew.reduce((s,d) => s + (d.estHrsNeeded || 0), 0);
+// Avg time per demo (cycle) across all approved cycles — replaces the old recording-based "hrs/demo" stat.
+const avgTimePerDemoSecs = totalApproved > 0 ? (totalApprovedHrs * 3600) / totalApproved : 0;
 
 document.getElementById('summary-cards').innerHTML = `
   <div class="card"><div class="val">${done.length} / ${active.length}</div><div class="lbl">Tasks at target (≥ 100 approved cycles)</div></div>
@@ -443,6 +450,7 @@ document.getElementById('summary-cards').innerHTML = `
   <div class="card"><div class="val">${totalEstHrs.toFixed(0)}h</div><div class="lbl">Est. recording hours needed</div></div>
   <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved cycles</div></div>
   <div class="card"><div class="val">${Math.round(totalApprovedHrs).toLocaleString()}h</div><div class="lbl">Total approved cycle-hours</div></div>
+  <div class="card"><div class="val">${fmtTimePerDemo(avgTimePerDemoSecs)}</div><div class="lbl">Avg. time per approved demo (cycle)</div></div>
   <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Recording rejection rate</div></div>
 `;
 
@@ -476,6 +484,11 @@ function badge(approved) {
   return '<span class="badge b-none">Not started</span>';
 }
 function fmtHrs(h) { return (!h || h === 0) ? '—' : h.toFixed(1) + 'h'; }
+function fmtTimePerDemo(secs) {
+  if (secs === null || secs === undefined || secs === 0) return '—';
+  if (secs < 60) return secs.toFixed(0) + 's';
+  return (secs / 60).toFixed(1) + 'm';
+}
 function locBadge(loc) {
   return loc === "Toronto"
     ? ' <span class="badge b-toronto">Toronto</span>'
@@ -529,6 +542,7 @@ document.getElementById('body-done').innerHTML = done.map(r => `
     <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
     <td class="num">${r.approved}</td>
     <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
+    <td class="num muted">${fmtTimePerDemo(r.timePerDemoSecs)}</td>
     <td class="num muted">${r.approvedRecordings}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="badge b-teal">Complete</span></td>
@@ -553,6 +567,7 @@ function renderBreakdown() {
   if (sortBy === 'needed')   rows.sort((a,b) => b.gap - a.gap);
   if (sortBy === 'rejpct')   rows.sort((a,b) => (b.rejPct||0) - (a.rejPct||0));
   if (sortBy === 'cpr')      rows.sort((a,b) => (b.cyclesPerRec||0) - (a.cyclesPerRec||0));
+  if (sortBy === 'tpd')      rows.sort((a,b) => (b.timePerDemoSecs||0) - (a.timePerDemoSecs||0));
   if (sortBy === 'esthrs')   rows.sort((a,b) => (b.estHrsNeeded||0) - (a.estHrsNeeded||0));
   if (sortBy === 'name')     rows.sort((a,b) => a.id.localeCompare(b.id));
 
@@ -566,6 +581,7 @@ function renderBreakdown() {
       <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)} ${statusBadge}</td>
       <td class="num">${r.onRoute ? '—' : r.approved}</td>
       <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1) : '—'}</td>
+      <td class="num muted">${fmtTimePerDemo(r.timePerDemoSecs)}</td>
       <td class="num muted">${r.cyclesPerRec !== null ? r.cyclesPerRec.toFixed(1) : '—'}</td>
       <td class="num muted">${r.approvedRecordings > 0 ? r.approvedRecordings : '—'}</td>
       <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
