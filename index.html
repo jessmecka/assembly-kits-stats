@@ -7,9 +7,12 @@
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
   body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f4f0; color: #1a1a18; font-size: 13px; }
-  .page { max-width: 1140px; margin: 0 auto; padding: 2rem 1.5rem; }
+  .page { max-width: 1180px; margin: 0 auto; padding: 2rem 1.5rem; }
   h1 { font-size: 20px; font-weight: 500; margin-bottom: 4px; }
-  .subtitle { font-size: 12px; color: #888780; margin-bottom: 2rem; }
+  .subtitle { font-size: 12px; color: #888780; margin-bottom: 1rem; }
+
+  .methodology { font-size: 11.5px; color: #3B5D8B; background: #EEF3FC; border: 0.5px solid #c9dafb; border-radius: 8px; padding: 10px 14px; margin-bottom: 1.5rem; line-height: 1.5; }
+  .methodology strong { color: #1a3a6b; }
 
   .cards { display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-bottom: 1rem; }
   .cards-toronto { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 2.5rem; }
@@ -90,10 +93,12 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved demos per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 06:12 AM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved cycles per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 06:34 AM CST</p>
+
+  <p class="methodology"><strong>Methodology (updated):</strong> "Approved" now counts individual good-verdict build <strong>cycles</strong> (one full kit build = one reviewed <code>segmentReviews</code> entry, ≥60s, from the latest review session per recording) — not whole recordings. A single ~45-min recording typically contains 8–11 cycles, so these numbers are much higher than a recording count. Cycles are only counted from recordings whose overall review status is <strong>approved</strong> (good builds inside rejected recordings are excluded — contested pool, not yet spot-checked). "Rejected" and "Rej %" are recording-level QA outcomes. "Pending" is unreviewed recordings awaiting review (no cycle data yet). Source: <code>qa_usertask_review_sessions.segmentReviews</code> + <code>user_tasks</code>, mecka-ai MongoDB (Longhua + Toronto).</p>
 
   <div class="cards" id="summary-cards"></div>
-  <p class="section-label" style="margin-top:0.5rem">Toronto pipeline — Studio - Toronto &amp; Z - Basil and Jerrin Duo (both projects)</p>
+  <p class="section-label" style="margin-top:0.5rem">Toronto pipeline — Studio - Toronto &amp; Z - Basil and Jerrin Duo (both projects, recording-level, unaffected by cycle redefinition)</p>
   <div class="cards-toronto" id="toronto-cards"></div>
 
   <div class="tabs">
@@ -108,15 +113,15 @@
       <div class="section-title" id="title-urgent"><span class="dot dot-red"></span>Needs new recordings</div>
       <table>
         <thead><tr>
-          <th style="width:26%">Task</th>
-          <th class="num" style="width:7%">Approved</th>
-          <th class="num" style="width:8%">Approved hrs</th>
+          <th style="width:22%">Task</th>
+          <th class="num" style="width:8%">Approved cycles</th>
+          <th class="num" style="width:8%">Cycle hrs</th>
           <th class="num" style="width:7%">Gap to 100</th>
-          <th class="num" style="width:8%">Pending review</th>
-          <th class="num" style="width:8%">Pending hrs</th>
-          <th class="num" style="width:7%">Rejected</th>
+          <th class="num" style="width:8%">Cycles/rec</th>
+          <th class="num" style="width:8%">Pending recs</th>
+          <th class="num" style="width:7%">Rejected recs</th>
           <th class="num" style="width:6%">Rej %</th>
-          <th class="num" style="width:8%">New needed</th>
+          <th class="num" style="width:9%">Recordings needed</th>
           <th class="num" style="width:9%">Est. hrs to record</th>
         </tr></thead>
         <tbody id="body-urgent"></tbody>
@@ -124,31 +129,31 @@
     </div>
 
     <div class="section">
-      <div class="section-title" id="title-watch"><span class="dot dot-amber"></span>Pending review may close the gap — monitor before scheduling</div>
+      <div class="section-title" id="title-watch"><span class="dot dot-amber"></span>Pending recordings likely close the gap — monitor before scheduling</div>
       <table>
         <thead><tr>
-          <th style="width:26%">Task</th>
-          <th class="num" style="width:7%">Approved</th>
-          <th class="num" style="width:8%">Approved hrs</th>
-          <th class="num" style="width:7%">Gap to 100</th>
-          <th class="num" style="width:9%">Pending review</th>
-          <th class="num" style="width:8%">Pending hrs</th>
-          <th class="num" style="width:7%">Rejected</th>
+          <th style="width:24%">Task</th>
+          <th class="num" style="width:9%">Approved cycles</th>
+          <th class="num" style="width:8%">Gap to 100</th>
+          <th class="num" style="width:9%">Pending recs</th>
+          <th class="num" style="width:11%">Expected cycles from pending</th>
+          <th class="num" style="width:8%">Rejected recs</th>
           <th class="num" style="width:6%">Rej %</th>
           <th class="num" style="width:14%">Status</th>
         </tr></thead>
         <tbody id="body-watch"></tbody>
       </table>
-      <p class="note">⚠ Rejection rate varies by task — factor in expected rejections when deciding whether to schedule extra recordings.</p>
+      <p class="note">⚠ "Expected cycles from pending" is an estimate (pending recordings × this kit's avg cycles/recording). Actual yield depends on review outcome.</p>
     </div>
 
     <div class="section">
       <div class="section-title" id="title-done"><span class="dot dot-teal"></span>Target met</div>
       <table>
         <thead><tr>
-          <th style="width:40%">Task</th>
-          <th class="num">Approved demos</th>
-          <th class="num">Approved hrs</th>
+          <th style="width:36%">Task</th>
+          <th class="num">Approved cycles</th>
+          <th class="num">Cycle hrs</th>
+          <th class="num">Approved recordings</th>
           <th class="num">Rejection rate</th>
           <th class="num">Status</th>
         </tr></thead>
@@ -161,7 +166,7 @@
       <table>
         <thead><tr>
           <th style="width:50%">Task</th>
-          <th class="num" style="width:20%">Recordings in system</th>
+          <th class="num" style="width:20%">Cycles in system</th>
           <th class="num" style="width:30%">Status</th>
         </tr></thead>
         <tbody id="body-onroute"></tbody>
@@ -175,31 +180,31 @@
     <div class="controls">
       <label>Sort by</label>
       <select id="sortSel" onchange="renderBreakdown()">
-        <option value="approved">Approved demos ↓</option>
+        <option value="approved">Approved cycles ↓</option>
         <option value="needed">Gap to 100 ↓</option>
         <option value="rejpct">Rejection rate ↓</option>
-        <option value="hpd">Hours per demo ↓</option>
+        <option value="cpr">Cycles / recording ↓</option>
         <option value="esthrs">Est. hrs needed ↓</option>
         <option value="name">Task name A–Z</option>
       </select>
       <label style="margin-left:8px">Filter</label>
       <select id="filterSel" onchange="renderBreakdown()">
         <option value="all">All tasks</option>
-        <option value="active">Has approved demos</option>
-        <option value="complete">Target met (≥ 100)</option>
-        <option value="none">No approved demos yet</option>
+        <option value="active">Has approved cycles</option>
+        <option value="complete">Target met (≥ 100 cycles)</option>
+        <option value="none">No approved cycles yet</option>
         <option value="onroute">On route only</option>
       </select>
     </div>
     <table>
       <thead><tr>
-        <th style="width:20%">Task</th>
-        <th class="num" style="width:7%">Approved</th>
-        <th class="num" style="width:8%">Approved hrs</th>
-        <th class="num" style="width:7%">Hrs / demo</th>
-        <th class="num" style="width:6%">Pending</th>
-        <th class="num" style="width:8%">Pending hrs</th>
-        <th class="num" style="width:6%">Rejected</th>
+        <th style="width:18%">Task</th>
+        <th class="num" style="width:8%">Approved cycles</th>
+        <th class="num" style="width:8%">Cycle hrs</th>
+        <th class="num" style="width:7%">Cycles / rec</th>
+        <th class="num" style="width:7%">Approved recs</th>
+        <th class="num" style="width:6%">Pending recs</th>
+        <th class="num" style="width:6%">Rejected recs</th>
         <th class="num" style="width:6%">Rej %</th>
         <th class="num" style="width:9%">Est. hrs needed</th>
         <th style="width:13%">Progress to 100</th>
@@ -210,7 +215,7 @@
 
   <!-- TAB 3 — Toronto recording stats -->
   <div class="tab-panel" id="tab-toronto">
-    <p class="note" style="margin-bottom:1.5rem">Recordings from <strong>Studio - Toronto</strong> + <strong>Z - Basil and Jerrin Duo</strong> across both Assembly Kit projects (Mono+Insta360 WC &amp; MC+CWC Exclusive). Data as of June 26, 2026 at 09:46 AM CST.</p>
+    <p class="note" style="margin-bottom:1.5rem">Recordings from <strong>Studio - Toronto</strong> + <strong>Z - Basil and Jerrin Duo</strong> across both Assembly Kit projects (Mono+Insta360 WC &amp; MC+CWC Exclusive). This tab is recording-level (unreviewed vs. reviewed recordings) and is a separate axis from the cycle-based progress tracker above — it was not affected by the cycle-counting methodology fix. Data as of June 26, 2026 at 09:46 AM CST.</p>
 
     <div class="section">
       <div class="section-title"><span class="dot dot-blue"></span>Per-task recording breakdown — Toronto groups only</div>
@@ -246,7 +251,7 @@
     </div>
   </div>
 
-  <p class="updated">Last updated: July 02, 2026 at 06:12 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto)</p>
+  <p class="updated">Last updated: July 02, 2026 at 06:34 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
 </div>
 
 <script>
@@ -273,16 +278,13 @@ const ON_ROUTE = new Set([]);
 
 // Any Toronto recording outside the 13 canonical kits is physically impossible → wrong metadata
 const METADATA_RISK = new Set([
-  "assemble_3in1_animals_on_wheels",       // likely misfiled as dinosaurs_on_wheels
-  "assemble_little_tikes_hammer_nail",     // Toronto doesn't have this kit
-  "assemble_tonze_kids_tool_bench",        // Toronto recorded under wrong project (MC+CWC Exclusive)
+  "assemble_3in1_animals_on_wheels",
+  "assemble_little_tikes_hammer_nail",
+  "assemble_tonze_kids_tool_bench",
 ]);
 
-// Per-task recordings from Studio - Toronto + Z - Basil & Jerrin Duo
-// Source: mecka-ai user_tasks, both project IDs, grouped by userGroupId
-// Updated: June 16, 2026 at 09:11 AM CST
+// Per-task recordings from Studio - Toronto + Z - Basil & Jerrin Duo (recording-level, unrelated to cycle fix)
 const torontoRecordings = {
-  // assemble_3in1_animals_on_wheels is Longhua-only; its Toronto recordings are misfiled → see metadataRiskData
   "assemble_3in1_dinosaurs_on_wheels":      {pending:91, pendingSecs:249268, validated:1, validatedSecs:2089,  rejected:1,  rejectedSecs:2683},
   "assemble_disney_cars_color_changer":     {pending:68, pendingSecs:184689, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_gigglescape_construction_set":  {pending:35, pendingSecs:110734, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
@@ -290,7 +292,6 @@ const torontoRecordings = {
   "assemble_hot_wheels_car":                {pending:68, pendingSecs:173819, validated:1, validatedSecs:3403,  rejected:0,  rejectedSecs:0},
   "assemble_iiromeci_gears":                {pending:82, pendingSecs:217057, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_lehoo_castle_tool_set":         {pending:70, pendingSecs:173950, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
-  // assemble_little_tikes_hammer_nail: Toronto doesn't have this kit → see metadataRiskData
   "assemble_little_tikes_power_cuts":       {pending:1,  pendingSecs:1285,   validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_mega_bloks_big_bag":            {pending:88, pendingSecs:230759, validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
   "assemble_montessori_tool_bench":         {pending:31, pendingSecs:81737,  validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
@@ -299,7 +300,6 @@ const torontoRecordings = {
   "assemble_tumble_tree_timbers":           {pending:0,  pendingSecs:0,      validated:0, validatedSecs:0,     rejected:0,  rejectedSecs:0},
 };
 
-// Any Toronto recording outside the 13 canonical kits is physically impossible — wrong metadata
 const metadataRiskData = [
   {
     id: "assemble_3in1_animals_on_wheels",
@@ -324,91 +324,102 @@ const metadataRiskData = [
   },
 ];
 
+// rawTasks — cycle-based (per SWE methodology): approved = good segmentReviews (>=60s) from
+// APPROVED recordings only, summed across Longhua + Toronto, latest review session per recording.
+// pending/pendingSecs = READY_FOR_REVIEW recordings from user_tasks (unreviewed, no cycle data yet).
+// rejectedRecordings = recording-level rejected count from qa_usertask_review_sessions.
 const rawTasks = [
-  {id:"assemble_3in1_animals_on_wheels", approved:113, approvedSecs:283578, pending:18, pendingSecs:40469, rejected:59},
-  {id:"assemble_3in1_dinosaurs_on_wheels", approved:117, approvedSecs:332571, pending:23, pendingSecs:70604, rejected:24},
-  {id:"assemble_aolew_erector_set", approved:85, approvedSecs:247554, pending:1, pendingSecs:3953, rejected:163},
-  {id:"assemble_apluses_magnetic_blocks", approved:131, approvedSecs:329579, pending:45, pendingSecs:97942, rejected:23},
-  {id:"assemble_basytodio_blocks", approved:67, approvedSecs:184756, pending:2, pendingSecs:3111, rejected:62},
-  {id:"assemble_battat_toy_plane", approved:127, approvedSecs:344177, pending:1, pendingSecs:2216, rejected:80},
-  {id:"assemble_bluey_family_house", approved:113, approvedSecs:297524, pending:11, pendingSecs:30359, rejected:38},
-  {id:"assemble_bracelet_kit", approved:81, approvedSecs:223208, pending:1, pendingSecs:3571, rejected:168},
-  {id:"assemble_btoys_oven", approved:115, approvedSecs:296904, pending:12, pendingSecs:30510, rejected:31},
-  {id:"assemble_cars_3_mcqueen_kit", approved:119, approvedSecs:321732, pending:0, pendingSecs:0, rejected:30},
-  {id:"assemble_coogam_racing_car", approved:143, approvedSecs:385479, pending:3, pendingSecs:7216, rejected:62},
-  {id:"assemble_dekilea_gear_blocks", approved:101, approvedSecs:278115, pending:0, pendingSecs:0, rejected:56},
-  {id:"assemble_design_gears_workshop", approved:117, approvedSecs:305904, pending:0, pendingSecs:0, rejected:19},
-  {id:"assemble_design_robot", approved:158, approvedSecs:441858, pending:1, pendingSecs:985, rejected:56},
-  {id:"assemble_dinosaur_toy", approved:110, approvedSecs:286567, pending:1, pendingSecs:1561, rejected:87},
-  {id:"assemble_disney_cars_color_changer", approved:60, approvedSecs:169384, pending:20, pendingSecs:51409, rejected:23},
-  {id:"assemble_disney_cars_copper_canyon", approved:123, approvedSecs:332294, pending:14, pendingSecs:36467, rejected:32},
-  {id:"assemble_fire_truck", approved:150, approvedSecs:391925, pending:13, pendingSecs:32453, rejected:53},
-  {id:"assemble_fyd_jeep", approved:131, approvedSecs:344925, pending:13, pendingSecs:38534, rejected:44},
-  {id:"assemble_gigglescape_construction_set", approved:44, approvedSecs:134243, pending:2, pendingSecs:7457, rejected:21},
-  {id:"assemble_gigglescape_train_set", approved:2, approvedSecs:4722, pending:0, pendingSecs:0, rejected:5},
-  {id:"assemble_hape_drive_car", approved:112, approvedSecs:294274, pending:5, pendingSecs:15472, rejected:37},
-  {id:"assemble_haptime_design_set", approved:91, approvedSecs:243213, pending:11, pendingSecs:34102, rejected:119},
-  {id:"assemble_hot_wheels_car", approved:81, approvedSecs:234113, pending:9, pendingSecs:13107, rejected:26},
-  {id:"assemble_iiromeci_gears", approved:84, approvedSecs:239326, pending:7, pendingSecs:15897, rejected:64},
-  {id:"assemble_kids_first_robot_factory", approved:77, approvedSecs:208412, pending:24, pendingSecs:64514, rejected:32},
-  {id:"assemble_lacchoufee_tool_box_1", approved:148, approvedSecs:404436, pending:10, pendingSecs:25153, rejected:74},
-  {id:"assemble_lacchoufee_tool_box_2", approved:96, approvedSecs:261652, pending:10, pendingSecs:20965, rejected:59},
-  {id:"assemble_laugh_learn_coffee_cafe", approved:98, approvedSecs:284475, pending:0, pendingSecs:0, rejected:129},
-  {id:"assemble_lego_angel_stitch_brick_headz", approved:130, approvedSecs:379355, pending:3, pendingSecs:7428, rejected:114},
-  {id:"assemble_lego_duplo_cake", approved:171, approvedSecs:426892, pending:1, pendingSecs:1736, rejected:28},
-  {id:"assemble_lego_duplo_garden", approved:119, approvedSecs:303319, pending:14, pendingSecs:34488, rejected:63},
-  {id:"assemble_lego_jet_vs_car", approved:123, approvedSecs:348855, pending:0, pendingSecs:0, rejected:80},
-  {id:"assemble_lego_road_plates", approved:104, approvedSecs:273146, pending:0, pendingSecs:0, rejected:112},
-  {id:"assemble_lego_year_of_horse", approved:128, approvedSecs:381635, pending:1, pendingSecs:1441, rejected:115},
-  {id:"assemble_lehoo_castle_tool_set", approved:82, approvedSecs:235417, pending:9, pendingSecs:10370, rejected:30},
-  {id:"assemble_little_tikes_hammer_nail", approved:75, approvedSecs:212591, pending:13, pendingSecs:31663, rejected:39},
-  {id:"assemble_little_tikes_measure_cut", approved:94, approvedSecs:262836, pending:21, pendingSecs:35965, rejected:57},
-  {id:"assemble_little_tikes_power_cuts", approved:31, approvedSecs:87542, pending:0, pendingSecs:0, rejected:9},
-  {id:"assemble_magna_tiles_puppy_park", approved:129, approvedSecs:323884, pending:49, pendingSecs:103915, rejected:39},
-  {id:"assemble_magnetic_train_track", approved:105, approvedSecs:259121, pending:16, pendingSecs:31624, rejected:35},
-  {id:"assemble_marble_run", approved:94, approvedSecs:254021, pending:0, pendingSecs:0, rejected:52},
-  {id:"assemble_mega_bloks_big_bag", approved:66, approvedSecs:181437, pending:9, pendingSecs:16557, rejected:36},
-  {id:"assemble_melissa_doug_sandwich_counter", approved:130, approvedSecs:341478, pending:0, pendingSecs:0, rejected:55},
-  {id:"assemble_montessori_tool_bench", approved:73, approvedSecs:222006, pending:21, pendingSecs:47349, rejected:20},
-  {id:"assemble_motor_works_vehicles", approved:97, approvedSecs:257891, pending:1, pendingSecs:3206, rejected:44},
-  {id:"assemble_mould_king_v8_kit", approved:74, approvedSecs:206882, pending:23, pendingSecs:60583, rejected:105},
-  {id:"assemble_mould_king_v8_model", approved:53, approvedSecs:153414, pending:13, pendingSecs:35615, rejected:152},
-  {id:"assemble_nails", approved:47, approvedSecs:135094, pending:5, pendingSecs:5011, rejected:8},
-  {id:"assemble_ooze_labs_chemistry", approved:131, approvedSecs:346690, pending:19, pendingSecs:36900, rejected:51},
-  {id:"assemble_play_dinos", approved:92, approvedSecs:263912, pending:11, pendingSecs:32696, rejected:39},
-  {id:"assemble_pup_go_car", approved:144, approvedSecs:400809, pending:0, pendingSecs:0, rejected:53},
-  {id:"assemble_remote_control_gear_bot", approved:146, approvedSecs:391315, pending:0, pendingSecs:0, rejected:47},
-  {id:"assemble_retro_car", approved:104, approvedSecs:281201, pending:18, pendingSecs:31603, rejected:74},
-  {id:"assemble_soft_baby_squishies", approved:77, approvedSecs:222033, pending:12, pendingSecs:30579, rejected:24},
-  {id:"assemble_tonze_kids_tool_bench", approved:112, approvedSecs:321357, pending:0, pendingSecs:0, rejected:47},
-  {id:"assemble_tumble_tree_timbers", approved:72, approvedSecs:212119, pending:13, pendingSecs:34919, rejected:42},
-  {id:"assemble_veais_kids_set", approved:101, approvedSecs:287967, pending:0, pendingSecs:0, rejected:67},
-  {id:"assemble_vtech_drill_toolbox", approved:93, approvedSecs:254841, pending:20, pendingSecs:52639, rejected:58},
-  {id:"assemble_wonder_tiles_city", approved:99, approvedSecs:262242, pending:1, pendingSecs:3387, rejected:50},
-  {id:"assemble_wooden_train_set", approved:55, approvedSecs:145676, pending:38, pendingSecs:110866, rejected:99},
-  {id:"assemble_zozoplay_gear_set", approved:114, approvedSecs:311266, pending:1, pendingSecs:576, rejected:115},
+  {id:"assemble_3in1_animals_on_wheels", approved:388, approvedSecs:177219, approvedRecordings:113, pending:18, pendingSecs:40469, rejectedRecordings:59},
+  {id:"assemble_3in1_dinosaurs_on_wheels", approved:797, approvedSecs:176351, approvedRecordings:117, pending:23, pendingSecs:70604, rejectedRecordings:24},
+  {id:"assemble_aolew_erector_set", approved:165, approvedSecs:159129, approvedRecordings:85, pending:1, pendingSecs:3953, rejectedRecordings:163},
+  {id:"assemble_apluses_magnetic_blocks", approved:1631, approvedSecs:210822, approvedRecordings:130, pending:45, pendingSecs:97942, rejectedRecordings:26},
+  {id:"assemble_basytodio_blocks", approved:165, approvedSecs:116451, approvedRecordings:66, pending:2, pendingSecs:3111, rejectedRecordings:64},
+  {id:"assemble_battat_toy_plane", approved:746, approvedSecs:192269, approvedRecordings:127, pending:1, pendingSecs:2216, rejectedRecordings:81},
+  {id:"assemble_bluey_family_house", approved:497, approvedSecs:192652, approvedRecordings:113, pending:11, pendingSecs:30359, rejectedRecordings:38},
+  {id:"assemble_bracelet_kit", approved:288, approvedSecs:171484, approvedRecordings:81, pending:1, pendingSecs:3571, rejectedRecordings:168},
+  {id:"assemble_btoys_oven", approved:1025, approvedSecs:155841, approvedRecordings:115, pending:12, pendingSecs:30510, rejectedRecordings:31},
+  {id:"assemble_cars_3_mcqueen_kit", approved:713, approvedSecs:143879, approvedRecordings:118, pending:0, pendingSecs:0, rejectedRecordings:30},
+  {id:"assemble_coogam_racing_car", approved:802, approvedSecs:198692, approvedRecordings:143, pending:3, pendingSecs:7216, rejectedRecordings:62},
+  {id:"assemble_dekilea_gear_blocks", approved:278, approvedSecs:177657, approvedRecordings:99, pending:0, pendingSecs:0, rejectedRecordings:56},
+  {id:"assemble_design_gears_workshop", approved:1368, approvedSecs:136343, approvedRecordings:116, pending:0, pendingSecs:0, rejectedRecordings:19},
+  {id:"assemble_design_robot", approved:1029, approvedSecs:195938, approvedRecordings:158, pending:1, pendingSecs:985, rejectedRecordings:57},
+  {id:"assemble_dinosaur_toy", approved:273, approvedSecs:168171, approvedRecordings:110, pending:1, pendingSecs:1561, rejectedRecordings:87},
+  {id:"assemble_disney_cars_color_changer", approved:498, approvedSecs:84806, approvedRecordings:60, pending:20, pendingSecs:51409, rejectedRecordings:23},
+  {id:"assemble_disney_cars_copper_canyon", approved:997, approvedSecs:156630, approvedRecordings:122, pending:14, pendingSecs:36467, rejectedRecordings:33},
+  {id:"assemble_fire_truck", approved:1203, approvedSecs:247209, approvedRecordings:150, pending:13, pendingSecs:32453, rejectedRecordings:53},
+  {id:"assemble_fyd_jeep", approved:748, approvedSecs:196124, approvedRecordings:130, pending:13, pendingSecs:38534, rejectedRecordings:44},
+  {id:"assemble_gigglescape_construction_set", approved:356, approvedSecs:36955, approvedRecordings:44, pending:2, pendingSecs:7457, rejectedRecordings:20},
+  {id:"assemble_gigglescape_train_set", approved:12, approvedSecs:3529, approvedRecordings:2, pending:0, pendingSecs:0, rejectedRecordings:5},
+  {id:"assemble_hape_drive_car", approved:555, approvedSecs:155126, approvedRecordings:111, pending:5, pendingSecs:15472, rejectedRecordings:36},
+  {id:"assemble_haptime_design_set", approved:202, approvedSecs:151023, approvedRecordings:91, pending:11, pendingSecs:34102, rejectedRecordings:119},
+  {id:"assemble_hot_wheels_car", approved:902, approvedSecs:90655, approvedRecordings:81, pending:9, pendingSecs:13107, rejectedRecordings:26},
+  {id:"assemble_iiromeci_gears", approved:328, approvedSecs:128509, approvedRecordings:84, pending:7, pendingSecs:15897, rejectedRecordings:63},
+  {id:"assemble_kids_first_robot_factory", approved:229, approvedSecs:125130, approvedRecordings:76, pending:24, pendingSecs:64514, rejectedRecordings:32},
+  {id:"assemble_lacchoufee_tool_box_1", approved:819, approvedSecs:253191, approvedRecordings:148, pending:10, pendingSecs:25153, rejectedRecordings:74},
+  {id:"assemble_lacchoufee_tool_box_2", approved:612, approvedSecs:165957, approvedRecordings:96, pending:10, pendingSecs:20965, rejectedRecordings:58},
+  {id:"assemble_laugh_learn_coffee_cafe", approved:661, approvedSecs:221212, approvedRecordings:98, pending:0, pendingSecs:0, rejectedRecordings:128},
+  {id:"assemble_lego_angel_stitch_brick_headz", approved:293, approvedSecs:230493, approvedRecordings:130, pending:3, pendingSecs:7428, rejectedRecordings:113},
+  {id:"assemble_lego_duplo_cake", approved:419, approvedSecs:52326, approvedRecordings:171, pending:1, pendingSecs:1736, rejectedRecordings:25},
+  {id:"assemble_lego_duplo_garden", approved:1024, approvedSecs:178086, approvedRecordings:119, pending:14, pendingSecs:34488, rejectedRecordings:63},
+  {id:"assemble_lego_jet_vs_car", approved:191, approvedSecs:278452, approvedRecordings:123, pending:0, pendingSecs:0, rejectedRecordings:80},
+  {id:"assemble_lego_road_plates", approved:312, approvedSecs:168918, approvedRecordings:103, pending:0, pendingSecs:0, rejectedRecordings:112},
+  {id:"assemble_lego_year_of_horse", approved:225, approvedSecs:260983, approvedRecordings:128, pending:1, pendingSecs:1441, rejectedRecordings:116},
+  {id:"assemble_lehoo_castle_tool_set", approved:378, approvedSecs:125576, approvedRecordings:82, pending:9, pendingSecs:10370, rejectedRecordings:30},
+  {id:"assemble_little_tikes_hammer_nail", approved:591, approvedSecs:143629, approvedRecordings:74, pending:13, pendingSecs:31663, rejectedRecordings:39},
+  {id:"assemble_little_tikes_measure_cut", approved:610, approvedSecs:194673, approvedRecordings:94, pending:21, pendingSecs:35965, rejectedRecordings:57},
+  {id:"assemble_little_tikes_power_cuts", approved:90, approvedSecs:9393, approvedRecordings:31, pending:0, pendingSecs:0, rejectedRecordings:9},
+  {id:"assemble_magna_tiles_puppy_park", approved:940, approvedSecs:194677, approvedRecordings:128, pending:49, pendingSecs:103915, rejectedRecordings:39},
+  {id:"assemble_magnetic_train_track", approved:607, approvedSecs:138905, approvedRecordings:105, pending:16, pendingSecs:31624, rejectedRecordings:35},
+  {id:"assemble_marble_run", approved:459, approvedSecs:142272, approvedRecordings:94, pending:0, pendingSecs:0, rejectedRecordings:52},
+  {id:"assemble_mega_bloks_big_bag", approved:903, approvedSecs:86333, approvedRecordings:66, pending:9, pendingSecs:16557, rejectedRecordings:36},
+  {id:"assemble_melissa_doug_sandwich_counter", approved:1199, approvedSecs:164897, approvedRecordings:130, pending:0, pendingSecs:0, rejectedRecordings:55},
+  {id:"assemble_montessori_tool_bench", approved:549, approvedSecs:107859, approvedRecordings:73, pending:21, pendingSecs:47349, rejectedRecordings:19},
+  {id:"assemble_motor_works_vehicles", approved:235, approvedSecs:147418, approvedRecordings:97, pending:1, pendingSecs:3206, rejectedRecordings:44},
+  {id:"assemble_mould_king_v8_kit", approved:121, approvedSecs:175699, approvedRecordings:74, pending:23, pendingSecs:60583, rejectedRecordings:105},
+  {id:"assemble_mould_king_v8_model", approved:94, approvedSecs:119139, approvedRecordings:53, pending:13, pendingSecs:35615, rejectedRecordings:152},
+  {id:"assemble_nails", approved:403, approvedSecs:58276, approvedRecordings:47, pending:5, pendingSecs:5011, rejectedRecordings:8},
+  {id:"assemble_ooze_labs_chemistry", approved:724, approvedSecs:176000, approvedRecordings:131, pending:19, pendingSecs:36900, rejectedRecordings:53},
+  {id:"assemble_play_dinos", approved:277, approvedSecs:170126, approvedRecordings:91, pending:11, pendingSecs:32696, rejectedRecordings:39},
+  {id:"assemble_pup_go_car", approved:845, approvedSecs:237262, approvedRecordings:144, pending:0, pendingSecs:0, rejectedRecordings:53},
+  {id:"assemble_remote_control_gear_bot", approved:839, approvedSecs:235425, approvedRecordings:146, pending:0, pendingSecs:0, rejectedRecordings:47},
+  {id:"assemble_retro_car", approved:297, approvedSecs:179937, approvedRecordings:103, pending:18, pendingSecs:31603, rejectedRecordings:74},
+  {id:"assemble_soft_baby_squishies", approved:1100, approvedSecs:96785, approvedRecordings:77, pending:12, pendingSecs:30579, rejectedRecordings:23},
+  {id:"assemble_tonze_kids_tool_bench", approved:934, approvedSecs:182158, approvedRecordings:112, pending:0, pendingSecs:0, rejectedRecordings:47},
+  {id:"assemble_tumble_tree_timbers", approved:329, approvedSecs:152561, approvedRecordings:72, pending:13, pendingSecs:34919, rejectedRecordings:38},
+  {id:"assemble_veais_kids_set", approved:396, approvedSecs:159077, approvedRecordings:101, pending:0, pendingSecs:0, rejectedRecordings:67},
+  {id:"assemble_vtech_drill_toolbox", approved:751, approvedSecs:163934, approvedRecordings:93, pending:20, pendingSecs:52639, rejectedRecordings:58},
+  {id:"assemble_wonder_tiles_city", approved:356, approvedSecs:169753, approvedRecordings:99, pending:1, pendingSecs:3387, rejectedRecordings:50},
+  {id:"assemble_wooden_train_set", approved:159, approvedSecs:90046, approvedRecordings:55, pending:38, pendingSecs:110866, rejectedRecordings:96},
+  {id:"assemble_zozoplay_gear_set", approved:261, approvedSecs:210076, approvedRecordings:114, pending:1, pendingSecs:576, rejectedRecordings:115},
 ];
 
 const TARGET = 100;
 
-const hpdSamples = rawTasks
-  .filter(t => !ON_ROUTE.has(t.id) && t.approved > 0)
-  .map(t => (t.approvedSecs / 3600) / t.approved);
-const avgHpd = hpdSamples.reduce((s,v) => s+v, 0) / hpdSamples.length;
+// Global fallback averages (used only if a kit has zero approved recordings)
+const totalApprovedRecAll = rawTasks.reduce((s,t) => s + t.approvedRecordings, 0);
+const totalApprovedCycAll = rawTasks.reduce((s,t) => s + t.approved, 0);
+const totalApprovedSecsAll = rawTasks.reduce((s,t) => s + t.approvedSecs, 0);
+const globalCyclesPerRec = totalApprovedRecAll > 0 ? totalApprovedCycAll / totalApprovedRecAll : 8;
+const globalHrsPerRec = totalApprovedRecAll > 0 ? (totalApprovedSecsAll/3600) / totalApprovedRecAll : 2.7;
 
 const data = rawTasks.map(t => {
   const onRoute  = ON_ROUTE.has(t.id);
   const isRisk   = METADATA_RISK.has(t.id);
   const location = TORONTO.has(t.id) || onRoute ? "Toronto" : "Longhua";
   const gap         = Math.max(0, TARGET - t.approved);
-  const newNeeded   = onRoute ? 0 : Math.max(0, gap - t.pending);
   const approvedHrs = t.approvedSecs / 3600;
   const pendingHrs  = t.pendingSecs / 3600;
-  const hpd         = t.approved > 0 ? approvedHrs / t.approved : null;
-  const reviewed    = t.approved + t.rejected;
-  const rejPct      = reviewed > 0 ? (t.rejected / reviewed) * 100 : null;
-  const estHrsNeeded = onRoute ? null : newNeeded > 0 ? newNeeded * (hpd || avgHpd) : 0;
-  return { ...t, onRoute, isRisk, location, gap, newNeeded, approvedHrs, pendingHrs, hpd, rejPct, estHrsNeeded };
+  const cyclesPerRec = t.approvedRecordings > 0 ? t.approved / t.approvedRecordings : null;
+  const hrsPerRec     = t.approvedRecordings > 0 ? approvedHrs / t.approvedRecordings : null;
+  const effCyclesPerRec = cyclesPerRec || globalCyclesPerRec;
+  const effHrsPerRec    = hrsPerRec || globalHrsPerRec;
+  const expectedFromPending = onRoute ? 0 : t.pending * effCyclesPerRec;
+  const remainingGap = onRoute ? 0 : Math.max(0, gap - expectedFromPending);
+  const recordingsNeeded = onRoute ? 0 : (remainingGap > 0 ? Math.ceil(remainingGap / effCyclesPerRec) : 0);
+  const estHrsNeeded = recordingsNeeded > 0 ? recordingsNeeded * effHrsPerRec : 0;
+  const reviewed = t.approvedRecordings + t.rejectedRecordings;
+  const rejPct   = reviewed > 0 ? (t.rejectedRecordings / reviewed) * 100 : null;
+  return { ...t, onRoute, isRisk, location, gap, approvedHrs, pendingHrs, cyclesPerRec, expectedFromPending, recordingsNeeded, estHrsNeeded, rejPct };
 });
 
 const active  = data.filter(d => !d.onRoute);
@@ -416,25 +427,26 @@ const onRoute = data.filter(d => d.onRoute);
 
 const totalApproved = active.reduce((s,d) => s + d.approved, 0);
 const totalApprovedHrs = active.reduce((s,d) => s + d.approvedHrs, 0);
-const totalRejected = active.reduce((s,d) => s + d.rejected, 0);
-const overallRejPct = (totalApproved + totalRejected) > 0
-  ? (totalRejected / (totalApproved + totalRejected) * 100).toFixed(1) : '0.0';
+const totalApprovedRecordings = active.reduce((s,d) => s + d.approvedRecordings, 0);
+const totalRejectedRecordings = active.reduce((s,d) => s + d.rejectedRecordings, 0);
+const overallRejPct = (totalApprovedRecordings + totalRejectedRecordings) > 0
+  ? (totalRejectedRecordings / (totalApprovedRecordings + totalRejectedRecordings) * 100).toFixed(1) : '0.0';
 const done    = active.filter(d => d.approved >= TARGET);
-const needNew = active.filter(d => d.approved < TARGET && d.newNeeded > 0).sort((a,b) => b.newNeeded - a.newNeeded);
-const watch   = active.filter(d => d.approved < TARGET && d.newNeeded === 0).sort((a,b) => b.gap - a.gap);
-const totalNew     = needNew.reduce((s,d) => s + d.newNeeded, 0);
+const needNew = active.filter(d => d.approved < TARGET && d.recordingsNeeded > 0).sort((a,b) => b.recordingsNeeded - a.recordingsNeeded);
+const watch   = active.filter(d => d.approved < TARGET && d.recordingsNeeded === 0).sort((a,b) => b.gap - a.gap);
+const totalRecordingsNeeded = needNew.reduce((s,d) => s + d.recordingsNeeded, 0);
 const totalEstHrs  = needNew.reduce((s,d) => s + (d.estHrsNeeded || 0), 0);
 
 document.getElementById('summary-cards').innerHTML = `
-  <div class="card"><div class="val">${done.length} / ${active.length}</div><div class="lbl">Tasks at target (≥ 100 approved)</div></div>
-  <div class="card"><div class="val">${totalNew}</div><div class="lbl">New recordings to schedule</div></div>
+  <div class="card"><div class="val">${done.length} / ${active.length}</div><div class="lbl">Tasks at target (≥ 100 approved cycles)</div></div>
+  <div class="card"><div class="val">${totalRecordingsNeeded}</div><div class="lbl">Recordings to schedule (est.)</div></div>
   <div class="card"><div class="val">${totalEstHrs.toFixed(0)}h</div><div class="lbl">Est. recording hours needed</div></div>
-  <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved demos</div></div>
-  <div class="card"><div class="val">${Math.round(totalApprovedHrs).toLocaleString()}h</div><div class="lbl">Total approved hours (deliverable)</div></div>
-  <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Overall rejection rate (of reviewed)</div></div>
+  <div class="card"><div class="val">${totalApproved.toLocaleString()}</div><div class="lbl">Total approved cycles</div></div>
+  <div class="card"><div class="val">${Math.round(totalApprovedHrs).toLocaleString()}h</div><div class="lbl">Total approved cycle-hours</div></div>
+  <div class="card warn"><div class="val">${overallRejPct}%</div><div class="lbl">Recording rejection rate</div></div>
 `;
 
-// Toronto pipeline cards
+// Toronto pipeline cards (recording-level, unchanged by cycle fix)
 const torPendingSecs    = Object.values(torontoRecordings).reduce((s,t) => s + t.pendingSecs, 0);
 const torValidatedSecs  = Object.values(torontoRecordings).reduce((s,t) => s + t.validatedSecs, 0);
 const torRejectedSecs   = Object.values(torontoRecordings).reduce((s,t) => s + t.rejectedSecs, 0);
@@ -446,7 +458,7 @@ const torTotalSecs      = torPendingSecs + torValidatedSecs + torRejectedSecs + 
 document.getElementById('toronto-cards').innerHTML = `
   <div class="card toronto-card"><div class="val">${(torTotalSecs/3600).toFixed(0)}h</div><div class="lbl">Total hours recorded (submitted)</div></div>
   <div class="card toronto-card"><div class="val">${(torPendingSecs/3600).toFixed(0)}h</div><div class="lbl">Pending review · ${torPending} recordings</div></div>
-  <div class="card toronto-card"><div class="val">${torValidated}</div><div class="lbl">Validated demos so far</div></div>
+  <div class="card toronto-card"><div class="val">${torValidated}</div><div class="lbl">Validated recordings so far</div></div>
   <div class="card toronto-card warn"><div class="val">${metadataRiskData.reduce((s,r)=>s+r.pending+(r.validated||0)+(r.rejected||0),0)} recordings</div><div class="lbl">⚠ Metadata risk (wrong task/project)</div></div>
 `;
 
@@ -490,12 +502,12 @@ document.getElementById('body-urgent').innerHTML = needNew.map(r => `
     <td class="num">${r.approved}</td>
     <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.gap}</td>
+    <td class="num muted">${r.cyclesPerRec !== null ? r.cyclesPerRec.toFixed(1) : '—'}</td>
     <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
-    <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1)+'h' : '—'}</td>
-    <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
+    <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
     ${rejCell(r.rejPct)}
-    <td class="num"><span class="num-big ${r.newNeeded >= 70 ? 'needs-high' : r.newNeeded >= 30 ? 'needs-mid' : 'needs-low'}">${r.newNeeded}</span></td>
-    <td class="num muted">${fmtHrs(r.estHrsNeeded)}${r.hpd === null ? '<span style="font-size:10px;color:#b4b2a9"> est</span>' : ''}</td>
+    <td class="num"><span class="num-big ${r.recordingsNeeded >= 15 ? 'needs-high' : r.recordingsNeeded >= 5 ? 'needs-mid' : 'needs-low'}">${r.recordingsNeeded}</span></td>
+    <td class="num muted">${fmtHrs(r.estHrsNeeded)}</td>
   </tr>`).join('');
 
 // Tab 1 — watch
@@ -503,11 +515,10 @@ document.getElementById('body-watch').innerHTML = watch.map(r => `
   <tr${rowClass(r)}>
     <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
     <td class="num">${r.approved}</td>
-    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
     <td class="num muted">${r.gap}</td>
     <td class="num">${r.pending}</td>
-    <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1)+'h' : '—'}</td>
-    <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
+    <td class="num muted">${r.expectedFromPending.toFixed(0)}</td>
+    <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="badge b-watch">Monitor pending</span></td>
   </tr>`).join('');
@@ -518,6 +529,7 @@ document.getElementById('body-done').innerHTML = done.map(r => `
     <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
     <td class="num">${r.approved}</td>
     <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
+    <td class="num muted">${r.approvedRecordings}</td>
     ${rejCell(r.rejPct)}
     <td class="num"><span class="badge b-teal">Complete</span></td>
   </tr>`).join('');
@@ -540,7 +552,7 @@ function renderBreakdown() {
   if (sortBy === 'approved') rows.sort((a,b) => b.approved - a.approved);
   if (sortBy === 'needed')   rows.sort((a,b) => b.gap - a.gap);
   if (sortBy === 'rejpct')   rows.sort((a,b) => (b.rejPct||0) - (a.rejPct||0));
-  if (sortBy === 'hpd')      rows.sort((a,b) => (b.hpd||0) - (a.hpd||0));
+  if (sortBy === 'cpr')      rows.sort((a,b) => (b.cyclesPerRec||0) - (a.cyclesPerRec||0));
   if (sortBy === 'esthrs')   rows.sort((a,b) => (b.estHrsNeeded||0) - (a.estHrsNeeded||0));
   if (sortBy === 'name')     rows.sort((a,b) => a.id.localeCompare(b.id));
 
@@ -549,15 +561,15 @@ function renderBreakdown() {
     const statusBadge = r.onRoute ? ' <span class="badge b-route">On route → Toronto</span>' : badge(r.approved);
     const estCell = r.onRoute
       ? `<td class="num muted">—</td>`
-      : `<td class="num muted">${fmtHrs(r.estHrsNeeded)}${r.estHrsNeeded > 0 && r.hpd === null ? '<span style="font-size:10px;color:#b4b2a9"> est</span>' : ''}</td>`;
+      : `<td class="num muted">${fmtHrs(r.estHrsNeeded)}</td>`;
     return `<tr${rowClass(r)}>
       <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)} ${statusBadge}</td>
       <td class="num">${r.onRoute ? '—' : r.approved}</td>
       <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1) : '—'}</td>
-      <td class="num muted">${r.hpd !== null ? r.hpd.toFixed(2)+'h' : '—'}</td>
+      <td class="num muted">${r.cyclesPerRec !== null ? r.cyclesPerRec.toFixed(1) : '—'}</td>
+      <td class="num muted">${r.approvedRecordings > 0 ? r.approvedRecordings : '—'}</td>
       <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
-      <td class="num muted">${r.pendingHrs > 0 ? r.pendingHrs.toFixed(1) : '—'}</td>
-      <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
+      <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
       <td class="num ${rejClass(r.rejPct)}">${r.rejPct !== null ? r.rejPct.toFixed(0)+'%' : '—'}</td>
       ${estCell}
       <td>
@@ -571,7 +583,7 @@ function renderBreakdown() {
 }
 renderBreakdown();
 
-// Tab 3 — Toronto recording stats
+// Tab 3 — Toronto recording stats (unchanged, recording-level)
 const torRows = Object.entries(torontoRecordings)
   .sort((a,b) => b[1].pending - a[1].pending);
 
