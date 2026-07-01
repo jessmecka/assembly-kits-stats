@@ -40,8 +40,12 @@
   select:hover { border-color: #888780; }
 
   table { width: 100%; border-collapse: collapse; }
-  th { font-size: 11px; font-weight: 500; color: #888780; text-align: left; padding: 8px 10px; border-bottom: 0.5px solid #d3d1c7; white-space: nowrap; cursor: pointer; user-select: none; }
-  th:hover { color: #1a1a18; }
+  th { font-size: 11px; font-weight: 500; color: #888780; text-align: left; padding: 8px 10px; border-bottom: 0.5px solid #d3d1c7; white-space: nowrap; cursor: default; user-select: none; }
+  th[data-key] { cursor: pointer; }
+  th[data-key]:hover { color: #1a1a18; }
+  th.sort-asc, th.sort-desc { color: #1a1a18; }
+  th.sort-asc::after { content: " \25B2"; font-size: 9px; position: relative; top: -1px; }
+  th.sort-desc::after { content: " \25BC"; font-size: 9px; position: relative; top: -1px; }
   th.num { text-align: right; }
   td { padding: 8px 10px; border-bottom: 0.5px solid #ebebea; font-size: 12.5px; }
   td.num { text-align: right; font-variant-numeric: tabular-nums; }
@@ -93,7 +97,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved cycles per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 06:55 AM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Target: 100 approved cycles per task &nbsp;·&nbsp; Live data as of July 02, 2026 at 07:29 AM CST</p>
 
   <p class="methodology"><strong>Methodology (updated):</strong> "Approved" now counts individual good-verdict build <strong>cycles</strong> (one full kit build = one reviewed <code>segmentReviews</code> entry, ≥60s, from the latest review session per recording) — not whole recordings. A single ~45-min recording typically contains 8–11 cycles, so these numbers are much higher than a recording count. Cycles are only counted from recordings whose overall review status is <strong>approved</strong> (good builds inside rejected recordings are excluded — contested pool, not yet spot-checked). "Rejected" and "Rej %" are recording-level QA outcomes. "Pending" is unreviewed recordings awaiting review (no cycle data yet). Source: <code>qa_usertask_review_sessions.segmentReviews</code> + <code>user_tasks</code>, mecka-ai MongoDB (Longhua + Toronto).</p>
 
@@ -111,18 +115,18 @@
   <div class="tab-panel active" id="tab-recordings">
     <div class="section">
       <div class="section-title" id="title-urgent"><span class="dot dot-red"></span>Needs new recordings</div>
-      <table>
+      <table id="table-urgent">
         <thead><tr>
-          <th style="width:22%">Task</th>
-          <th class="num" style="width:8%">Approved cycles</th>
-          <th class="num" style="width:8%">Cycle hrs</th>
-          <th class="num" style="width:7%">Gap to 100</th>
-          <th class="num" style="width:8%">Cycles/rec</th>
-          <th class="num" style="width:8%">Pending recs</th>
-          <th class="num" style="width:7%">Rejected recs</th>
-          <th class="num" style="width:6%">Rej %</th>
-          <th class="num" style="width:9%">Recordings needed</th>
-          <th class="num" style="width:9%">Est. hrs to record</th>
+          <th style="width:22%" data-key="id">Task</th>
+          <th class="num" style="width:8%" data-key="approved">Approved cycles</th>
+          <th class="num" style="width:8%" data-key="approvedHrs">Cycle hrs</th>
+          <th class="num" style="width:7%" data-key="gap">Gap to 100</th>
+          <th class="num" style="width:8%" data-key="cyclesPerRec">Cycles/rec</th>
+          <th class="num" style="width:8%" data-key="pending">Pending recs</th>
+          <th class="num" style="width:7%" data-key="rejectedRecordings">Rejected recs</th>
+          <th class="num" style="width:6%" data-key="rejPct">Rej %</th>
+          <th class="num" style="width:9%" data-key="recordingsNeeded">Recordings needed</th>
+          <th class="num" style="width:9%" data-key="estHrsNeeded">Est. hrs to record</th>
         </tr></thead>
         <tbody id="body-urgent"></tbody>
       </table>
@@ -130,15 +134,15 @@
 
     <div class="section">
       <div class="section-title" id="title-watch"><span class="dot dot-amber"></span>Pending recordings likely close the gap — monitor before scheduling</div>
-      <table>
+      <table id="table-watch">
         <thead><tr>
-          <th style="width:24%">Task</th>
-          <th class="num" style="width:9%">Approved cycles</th>
-          <th class="num" style="width:8%">Gap to 100</th>
-          <th class="num" style="width:9%">Pending recs</th>
-          <th class="num" style="width:11%">Expected cycles from pending</th>
-          <th class="num" style="width:8%">Rejected recs</th>
-          <th class="num" style="width:6%">Rej %</th>
+          <th style="width:24%" data-key="id">Task</th>
+          <th class="num" style="width:9%" data-key="approved">Approved cycles</th>
+          <th class="num" style="width:8%" data-key="gap">Gap to 100</th>
+          <th class="num" style="width:9%" data-key="pending">Pending recs</th>
+          <th class="num" style="width:11%" data-key="expectedFromPending">Expected cycles from pending</th>
+          <th class="num" style="width:8%" data-key="rejectedRecordings">Rejected recs</th>
+          <th class="num" style="width:6%" data-key="rejPct">Rej %</th>
           <th class="num" style="width:14%">Status</th>
         </tr></thead>
         <tbody id="body-watch"></tbody>
@@ -148,14 +152,14 @@
 
     <div class="section">
       <div class="section-title" id="title-done"><span class="dot dot-teal"></span>Target met</div>
-      <table>
+      <table id="table-done">
         <thead><tr>
-          <th style="width:30%">Task</th>
-          <th class="num">Approved cycles</th>
-          <th class="num">Cycle hrs</th>
-          <th class="num">Time / demo</th>
-          <th class="num">Approved recordings</th>
-          <th class="num">Rejection rate</th>
+          <th style="width:30%" data-key="id">Task</th>
+          <th class="num" data-key="approved">Approved cycles</th>
+          <th class="num" data-key="approvedHrs">Cycle hrs</th>
+          <th class="num" data-key="timePerDemoSecs">Time / demo</th>
+          <th class="num" data-key="approvedRecordings">Approved recordings</th>
+          <th class="num" data-key="rejPct">Rejection rate</th>
           <th class="num">Status</th>
         </tr></thead>
         <tbody id="body-done"></tbody>
@@ -164,10 +168,10 @@
 
     <div class="section">
       <div class="section-title"><span class="dot dot-gray"></span>On route to Toronto — unavailable for recording</div>
-      <table>
+      <table id="table-onroute">
         <thead><tr>
-          <th style="width:50%">Task</th>
-          <th class="num" style="width:20%">Cycles in system</th>
+          <th style="width:50%" data-key="id">Task</th>
+          <th class="num" style="width:20%" data-key="approved">Cycles in system</th>
           <th class="num" style="width:30%">Status</th>
         </tr></thead>
         <tbody id="body-onroute"></tbody>
@@ -180,7 +184,7 @@
   <div class="tab-panel" id="tab-breakdown">
     <div class="controls">
       <label>Sort by</label>
-      <select id="sortSel" onchange="renderBreakdown()">
+      <select id="sortSel">
         <option value="approved">Approved cycles ↓</option>
         <option value="needed">Gap to 100 ↓</option>
         <option value="rejpct">Rejection rate ↓</option>
@@ -190,7 +194,7 @@
         <option value="name">Task name A–Z</option>
       </select>
       <label style="margin-left:8px">Filter</label>
-      <select id="filterSel" onchange="renderBreakdown()">
+      <select id="filterSel">
         <option value="all">All tasks</option>
         <option value="active">Has approved cycles</option>
         <option value="complete">Target met (≥ 100 cycles)</option>
@@ -198,19 +202,19 @@
         <option value="onroute">On route only</option>
       </select>
     </div>
-    <table>
+    <table id="table-breakdown">
       <thead><tr>
-        <th style="width:14%">Task</th>
-        <th class="num" style="width:8%">Approved cycles</th>
-        <th class="num" style="width:7%">Cycle hrs</th>
-        <th class="num" style="width:7%">Time / demo</th>
-        <th class="num" style="width:7%">Cycles / rec</th>
-        <th class="num" style="width:6%">Approved recs</th>
-        <th class="num" style="width:5%">Pending recs</th>
-        <th class="num" style="width:5%">Rejected recs</th>
-        <th class="num" style="width:6%">Rej %</th>
-        <th class="num" style="width:8%">Est. hrs needed</th>
-        <th style="width:11%">Progress to 100</th>
+        <th style="width:14%" data-key="id">Task</th>
+        <th class="num" style="width:8%" data-key="approved">Approved cycles</th>
+        <th class="num" style="width:7%" data-key="approvedHrs">Cycle hrs</th>
+        <th class="num" style="width:7%" data-key="timePerDemoSecs">Time / demo</th>
+        <th class="num" style="width:7%" data-key="cyclesPerRec">Cycles / rec</th>
+        <th class="num" style="width:6%" data-key="approvedRecordings">Approved recs</th>
+        <th class="num" style="width:5%" data-key="pending">Pending recs</th>
+        <th class="num" style="width:5%" data-key="rejectedRecordings">Rejected recs</th>
+        <th class="num" style="width:6%" data-key="rejPct">Rej %</th>
+        <th class="num" style="width:8%" data-key="estHrsNeeded">Est. hrs needed</th>
+        <th style="width:11%" data-key="approved">Progress to 100</th>
       </tr></thead>
       <tbody id="body-breakdown"></tbody>
     </table>
@@ -222,15 +226,15 @@
 
     <div class="section">
       <div class="section-title"><span class="dot dot-blue"></span>Per-task recording breakdown — Toronto groups only</div>
-      <table>
+      <table id="table-toronto">
         <thead><tr>
-          <th style="width:32%">Task</th>
-          <th class="num" style="width:9%">Pending</th>
-          <th class="num" style="width:9%">Pending hrs</th>
-          <th class="num" style="width:9%">Validated</th>
-          <th class="num" style="width:9%">Rejected</th>
-          <th class="num" style="width:9%">Total submitted</th>
-          <th class="num" style="width:9%">Total hrs</th>
+          <th style="width:32%" data-key="id">Task</th>
+          <th class="num" style="width:9%" data-key="pending">Pending</th>
+          <th class="num" style="width:9%" data-key="pendingSecs">Pending hrs</th>
+          <th class="num" style="width:9%" data-key="validated">Validated</th>
+          <th class="num" style="width:9%" data-key="rejected">Rejected</th>
+          <th class="num" style="width:9%" data-key="totalCount">Total submitted</th>
+          <th class="num" style="width:9%" data-key="totalSecs">Total hrs</th>
           <th style="width:14%">Status</th>
         </tr></thead>
         <tbody id="body-toronto"></tbody>
@@ -239,13 +243,13 @@
 
     <div class="section" style="margin-top:2rem">
       <div class="risk-header">⚠ Metadata risk — recorded by Toronto groups under wrong project</div>
-      <table style="border-top: 0.5px solid #f5c8a8;">
+      <table id="table-risk" style="border-top: 0.5px solid #f5c8a8;">
         <thead><tr>
-          <th style="width:28%">Task</th>
-          <th class="num" style="width:8%">Pending</th>
-          <th class="num" style="width:8%">Validated</th>
-          <th class="num" style="width:8%">Rejected</th>
-          <th class="num" style="width:8%">Total hrs</th>
+          <th style="width:28%" data-key="id">Task</th>
+          <th class="num" style="width:8%" data-key="pending">Pending</th>
+          <th class="num" style="width:8%" data-key="validated">Validated</th>
+          <th class="num" style="width:8%" data-key="rejected">Rejected</th>
+          <th class="num" style="width:8%" data-key="totalSecs">Total hrs</th>
           <th style="width:40%">Issue</th>
         </tr></thead>
         <tbody id="body-risk"></tbody>
@@ -254,7 +258,7 @@
     </div>
   </div>
 
-  <p class="updated">Last updated: July 02, 2026 at 06:55 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
+  <p class="updated">Last updated: July 02, 2026 at 07:29 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
 </div>
 
 <script>
@@ -509,67 +513,83 @@ document.getElementById('title-watch').innerHTML  += `<span class="count-pill">$
 document.getElementById('title-done').innerHTML   += `<span class="count-pill">${done.length}</span>`;
 
 // Tab 1 — urgent
-document.getElementById('body-urgent').innerHTML = needNew.map(r => `
-  <tr${rowClass(r)}>
-    <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
-    <td class="num muted">${r.gap}</td>
-    <td class="num muted">${r.cyclesPerRec !== null ? r.cyclesPerRec.toFixed(1) : '—'}</td>
-    <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
-    <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
-    ${rejCell(r.rejPct)}
-    <td class="num"><span class="num-big ${r.recordingsNeeded >= 15 ? 'needs-high' : r.recordingsNeeded >= 5 ? 'needs-mid' : 'needs-low'}">${r.recordingsNeeded}</span></td>
-    <td class="num muted">${fmtHrs(r.estHrsNeeded)}</td>
-  </tr>`).join('');
+function renderUrgent(rows) {
+  document.getElementById('body-urgent').innerHTML = rows.map(r => `
+    <tr${rowClass(r)}>
+      <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
+      <td class="num">${r.approved}</td>
+      <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
+      <td class="num muted">${r.gap}</td>
+      <td class="num muted">${r.cyclesPerRec !== null ? r.cyclesPerRec.toFixed(1) : '—'}</td>
+      <td class="num muted">${r.pending > 0 ? r.pending : '—'}</td>
+      <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
+      ${rejCell(r.rejPct)}
+      <td class="num"><span class="num-big ${r.recordingsNeeded >= 15 ? 'needs-high' : r.recordingsNeeded >= 5 ? 'needs-mid' : 'needs-low'}">${r.recordingsNeeded}</span></td>
+      <td class="num muted">${fmtHrs(r.estHrsNeeded)}</td>
+    </tr>`).join('');
+}
+renderUrgent(needNew);
 
 // Tab 1 — watch
-document.getElementById('body-watch').innerHTML = watch.map(r => `
-  <tr${rowClass(r)}>
-    <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num muted">${r.gap}</td>
-    <td class="num">${r.pending}</td>
-    <td class="num muted">${r.expectedFromPending.toFixed(0)}</td>
-    <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
-    ${rejCell(r.rejPct)}
-    <td class="num"><span class="badge b-watch">Monitor pending</span></td>
-  </tr>`).join('');
+function renderWatch(rows) {
+  document.getElementById('body-watch').innerHTML = rows.map(r => `
+    <tr${rowClass(r)}>
+      <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
+      <td class="num">${r.approved}</td>
+      <td class="num muted">${r.gap}</td>
+      <td class="num">${r.pending}</td>
+      <td class="num muted">${r.expectedFromPending.toFixed(0)}</td>
+      <td class="num muted">${r.rejectedRecordings > 0 ? r.rejectedRecordings : '—'}</td>
+      ${rejCell(r.rejPct)}
+      <td class="num"><span class="badge b-watch">Monitor pending</span></td>
+    </tr>`).join('');
+}
+renderWatch(watch);
 
 // Tab 1 — done
-document.getElementById('body-done').innerHTML = done.map(r => `
-  <tr${rowClass(r)}>
-    <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
-    <td class="num">${r.approved}</td>
-    <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
-    <td class="num muted">${fmtTimePerDemo(r.timePerDemoSecs)}</td>
-    <td class="num muted">${r.approvedRecordings}</td>
-    ${rejCell(r.rejPct)}
-    <td class="num"><span class="badge b-teal">Complete</span></td>
-  </tr>`).join('');
+function renderDone(rows) {
+  document.getElementById('body-done').innerHTML = rows.map(r => `
+    <tr${rowClass(r)}>
+      <td>${r.id}${locBadge(r.location)}${riskBadge(r.isRisk)}</td>
+      <td class="num">${r.approved}</td>
+      <td class="num muted">${r.approvedHrs > 0 ? r.approvedHrs.toFixed(1)+'h' : '—'}</td>
+      <td class="num muted">${fmtTimePerDemo(r.timePerDemoSecs)}</td>
+      <td class="num muted">${r.approvedRecordings}</td>
+      ${rejCell(r.rejPct)}
+      <td class="num"><span class="badge b-teal">Complete</span></td>
+    </tr>`).join('');
+}
+renderDone(done);
 
 // Tab 1 — on route
-document.getElementById('body-onroute').innerHTML = onRoute
-  .sort((a,b) => a.id.localeCompare(b.id))
-  .map(r => `<tr class="on-route"><td>${r.id}</td><td class="num muted">—</td><td class="num"><span class="badge b-route">On route → Toronto</span></td></tr>`)
-  .join('');
+function renderOnRoute(rows) {
+  document.getElementById('body-onroute').innerHTML = rows
+    .map(r => `<tr class="on-route"><td>${r.id}</td><td class="num muted">${r.approved > 0 ? r.approved : '—'}</td><td class="num"><span class="badge b-route">On route → Toronto</span></td></tr>`)
+    .join('');
+}
+renderOnRoute([...onRoute].sort((a,b) => a.id.localeCompare(b.id)));
 
-// Tab 2 — full breakdown
+// Tab 2 — full breakdown (dropdown Sort/Filter + clickable column headers share one sort state)
+let breakdownSort = { key: 'approved', dir: -1 };
+const breakdownDropdownMap = { approved: 'approved', gap: 'needed', rejPct: 'rejpct', cyclesPerRec: 'cpr', timePerDemoSecs: 'tpd', estHrsNeeded: 'esthrs', id: 'name' };
+
 function renderBreakdown() {
-  const sortBy   = document.getElementById('sortSel').value;
   const filterBy = document.getElementById('filterSel').value;
   let rows = [...data];
   if (filterBy === 'active')   rows = rows.filter(r => !r.onRoute && r.approved > 0);
   if (filterBy === 'complete') rows = rows.filter(r => !r.onRoute && r.approved >= TARGET);
   if (filterBy === 'none')     rows = rows.filter(r => !r.onRoute && r.approved === 0);
   if (filterBy === 'onroute')  rows = rows.filter(r => r.onRoute);
-  if (sortBy === 'approved') rows.sort((a,b) => b.approved - a.approved);
-  if (sortBy === 'needed')   rows.sort((a,b) => b.gap - a.gap);
-  if (sortBy === 'rejpct')   rows.sort((a,b) => (b.rejPct||0) - (a.rejPct||0));
-  if (sortBy === 'cpr')      rows.sort((a,b) => (b.cyclesPerRec||0) - (a.cyclesPerRec||0));
-  if (sortBy === 'tpd')      rows.sort((a,b) => (b.timePerDemoSecs||0) - (a.timePerDemoSecs||0));
-  if (sortBy === 'esthrs')   rows.sort((a,b) => (b.estHrsNeeded||0) - (a.estHrsNeeded||0));
-  if (sortBy === 'name')     rows.sort((a,b) => a.id.localeCompare(b.id));
+
+  const { key, dir } = breakdownSort;
+  rows.sort((a, b) => {
+    let va = a[key], vb = b[key];
+    const aNull = va === null || va === undefined;
+    const bNull = vb === null || vb === undefined;
+    if (aNull || bNull) return aNull && bNull ? 0 : (aNull ? 1 : -1);
+    if (typeof va === 'string') return dir * va.localeCompare(vb);
+    return dir * (va - vb);
+  });
 
   document.getElementById('body-breakdown').innerHTML = rows.map(r => {
     const pct = Math.min(100, r.approved);
@@ -597,43 +617,130 @@ function renderBreakdown() {
     </tr>`;
   }).join('');
 }
+
+function applySortDropdown() {
+  const sortBy = document.getElementById('sortSel').value;
+  const keyByOption = { approved: 'approved', needed: 'gap', rejpct: 'rejPct', cpr: 'cyclesPerRec', tpd: 'timePerDemoSecs', esthrs: 'estHrsNeeded', name: 'id' };
+  const key = keyByOption[sortBy] || 'approved';
+  breakdownSort = { key, dir: sortBy === 'name' ? 1 : -1 };
+  markSortedHeader('table-breakdown', key, breakdownSort.dir);
+  renderBreakdown();
+}
+document.getElementById('sortSel').addEventListener('change', applySortDropdown);
+document.getElementById('filterSel').addEventListener('change', renderBreakdown);
 renderBreakdown();
 
 // Tab 3 — Toronto recording stats (unchanged, recording-level)
-const torRows = Object.entries(torontoRecordings)
-  .sort((a,b) => b[1].pending - a[1].pending);
+const torontoRows = Object.entries(torontoRecordings).map(([id, t]) => ({
+  id, ...t,
+  totalSecs: t.pendingSecs + t.validatedSecs + t.rejectedSecs,
+  totalCount: t.pending + t.validated + t.rejected,
+}));
 
-document.getElementById('body-toronto').innerHTML = torRows.map(([id, t]) => {
-  const totalSecs  = t.pendingSecs + t.validatedSecs + t.rejectedSecs;
-  const totalCount = t.pending + t.validated + t.rejected;
-  const statusBadge = t.validated > 0
-    ? '<span class="badge b-teal">Has approvals</span>'
-    : t.pending > 0
-      ? '<span class="badge b-watch">In review</span>'
-      : '<span class="badge b-none">No recordings</span>';
-  return `<tr>
-    <td>${id} <span class="badge b-toronto">Toronto</span></td>
-    <td class="num">${t.pending > 0 ? t.pending : '<span class="muted">—</span>'}</td>
-    <td class="num muted">${t.pendingSecs > 0 ? (t.pendingSecs/3600).toFixed(1)+'h' : '—'}</td>
-    <td class="num">${t.validated > 0 ? `<strong>${t.validated}</strong>` : '<span class="muted">—</span>'}</td>
-    <td class="num muted">${t.rejected > 0 ? t.rejected : '—'}</td>
-    <td class="num muted">${totalCount > 0 ? totalCount : '—'}</td>
-    <td class="num muted">${totalSecs > 0 ? (totalSecs/3600).toFixed(1)+'h' : '—'}</td>
-    <td>${statusBadge}</td>
-  </tr>`;
-}).join('');
+function renderToronto(rows) {
+  document.getElementById('body-toronto').innerHTML = rows.map(t => {
+    const statusBadge = t.validated > 0
+      ? '<span class="badge b-teal">Has approvals</span>'
+      : t.pending > 0
+        ? '<span class="badge b-watch">In review</span>'
+        : '<span class="badge b-none">No recordings</span>';
+    return `<tr>
+      <td>${t.id} <span class="badge b-toronto">Toronto</span></td>
+      <td class="num">${t.pending > 0 ? t.pending : '<span class="muted">—</span>'}</td>
+      <td class="num muted">${t.pendingSecs > 0 ? (t.pendingSecs/3600).toFixed(1)+'h' : '—'}</td>
+      <td class="num">${t.validated > 0 ? `<strong>${t.validated}</strong>` : '<span class="muted">—</span>'}</td>
+      <td class="num muted">${t.rejected > 0 ? t.rejected : '—'}</td>
+      <td class="num muted">${t.totalCount > 0 ? t.totalCount : '—'}</td>
+      <td class="num muted">${t.totalSecs > 0 ? (t.totalSecs/3600).toFixed(1)+'h' : '—'}</td>
+      <td>${statusBadge}</td>
+    </tr>`;
+  }).join('');
+}
+renderToronto([...torontoRows].sort((a,b) => b.pending - a.pending));
 
-document.getElementById('body-risk').innerHTML = metadataRiskData.map(r => {
-  const totalSecs = r.pendingSecs + r.validatedSecs + r.rejectedSecs;
-  return `<tr class="risk-row">
-    <td>${r.id} <span class="badge b-risk">⚠ metadata risk</span></td>
-    <td class="num">${r.pending > 0 ? r.pending : '—'}</td>
-    <td class="num">${r.validated > 0 ? `<strong>${r.validated}</strong>` : '—'}</td>
-    <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
-    <td class="num muted">${(totalSecs/3600).toFixed(1)}h</td>
-    <td style="font-size:11px;color:#7a3a10">${r.issue}</td>
-  </tr>`;
-}).join('');
+metadataRiskData.forEach(r => { r.totalSecs = r.pendingSecs + r.validatedSecs + r.rejectedSecs; });
+
+function renderRisk(rows) {
+  document.getElementById('body-risk').innerHTML = rows.map(r => `
+    <tr class="risk-row">
+      <td>${r.id} <span class="badge b-risk">⚠ metadata risk</span></td>
+      <td class="num">${r.pending > 0 ? r.pending : '—'}</td>
+      <td class="num">${r.validated > 0 ? `<strong>${r.validated}</strong>` : '—'}</td>
+      <td class="num muted">${r.rejected > 0 ? r.rejected : '—'}</td>
+      <td class="num muted">${(r.totalSecs/3600).toFixed(1)}h</td>
+      <td style="font-size:11px;color:#7a3a10">${r.issue}</td>
+    </tr>`).join('');
+}
+renderRisk(metadataRiskData);
+
+// Generic click-to-sort for table headers with a data-key attribute.
+// Ascending on first click, descending on second click of the same header.
+function enableSort(tableId, getBaseRows, renderFn, initialKey, initialDir) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  const ths = [...table.querySelectorAll('thead th[data-key]')];
+  const state = { key: initialKey || null, dir: initialDir || 1 };
+  function apply() {
+    const rows = [...getBaseRows()];
+    if (state.key) {
+      rows.sort((a, b) => {
+        let va = a[state.key], vb = b[state.key];
+        const aNull = va === null || va === undefined;
+        const bNull = vb === null || vb === undefined;
+        if (aNull || bNull) return aNull && bNull ? 0 : (aNull ? 1 : -1);
+        if (typeof va === 'string') return state.dir * va.localeCompare(vb);
+        return state.dir * (va - vb);
+      });
+    }
+    renderFn(rows);
+  }
+  ths.forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.getAttribute('data-key');
+      if (state.key === key) { state.dir *= -1; } else { state.key = key; state.dir = 1; }
+      ths.forEach(t => t.classList.remove('sort-asc', 'sort-desc'));
+      th.classList.add(state.dir === 1 ? 'sort-asc' : 'sort-desc');
+      apply();
+    });
+  });
+}
+
+function markSortedHeader(tableId, key, dir) {
+  const table = document.getElementById(tableId);
+  if (!table) return;
+  table.querySelectorAll('thead th[data-key]').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.getAttribute('data-key') === key) th.classList.add(dir === 1 ? 'sort-asc' : 'sort-desc');
+  });
+}
+
+enableSort('table-urgent', () => needNew, renderUrgent, 'recordingsNeeded', -1);
+markSortedHeader('table-urgent', 'recordingsNeeded', -1);
+enableSort('table-watch', () => watch, renderWatch, 'gap', -1);
+markSortedHeader('table-watch', 'gap', -1);
+enableSort('table-done', () => done, renderDone, null, 1);
+enableSort('table-onroute', () => onRoute, renderOnRoute, 'id', 1);
+markSortedHeader('table-onroute', 'id', 1);
+enableSort('table-toronto', () => torontoRows, renderToronto, 'pending', -1);
+markSortedHeader('table-toronto', 'pending', -1);
+enableSort('table-risk', () => metadataRiskData, renderRisk, null, 1);
+
+// The breakdown table's headers drive the same sort state as the dropdown above.
+(function enableBreakdownHeaderSort() {
+  const table = document.getElementById('table-breakdown');
+  const ths = [...table.querySelectorAll('thead th[data-key]')];
+  ths.forEach(th => {
+    th.addEventListener('click', () => {
+      const key = th.getAttribute('data-key');
+      if (breakdownSort.key === key) { breakdownSort.dir *= -1; } else { breakdownSort = { key, dir: 1 }; }
+      markSortedHeader('table-breakdown', breakdownSort.key, breakdownSort.dir);
+      const opt = breakdownDropdownMap[breakdownSort.key];
+      if (opt) document.getElementById('sortSel').value = opt;
+      renderBreakdown();
+    });
+  });
+})();
+markSortedHeader('table-breakdown', 'approved', -1);
 
 function switchTab(name, el) {
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
