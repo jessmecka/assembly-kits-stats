@@ -97,7 +97,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Requirement: 100 approved cycles or 20h cycle time per task, whichever is more &nbsp;·&nbsp; Live data as of July 16, 2026 at 09:13 PM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Requirement: 100 approved cycles or 20h cycle time per task, whichever is more &nbsp;·&nbsp; Live data as of July 18, 2026 at 09:39 AM CST</p>
 
   <p class="methodology"><strong>Methodology (updated):</strong> "Approved" now counts individual good-verdict build <strong>cycles</strong> (one full kit build = one reviewed <code>segmentReviews</code> entry, ≥60s, from the latest review session per recording) — not whole recordings. A single ~45-min recording typically contains 8–11 cycles, so these numbers are much higher than a recording count. Cycles are only counted from recordings whose overall review status is <strong>approved</strong> (good builds inside rejected recordings are excluded — contested pool, not yet spot-checked). "Rejected" and "Rej %" are recording-level QA outcomes. "Pending" is unreviewed recordings awaiting review (no cycle data yet). <strong>Requirement (updated):</strong> each task must deliver <strong>100 approved cycles or 20 hours of approved cycle time, whichever is more</strong> — a task is complete only when it has ≥100 cycles <em>and</em> ≥20h of cycle time. Fast-cycle kits (short builds) therefore need more than 100 cycles to reach the 20h floor. Source: <code>qa_usertask_review_sessions.segmentReviews</code> + <code>user_tasks</code>, mecka-ai MongoDB (Longhua + Toronto).</p>
 
@@ -261,7 +261,7 @@
     </div>
   </div>
 
-  <p class="updated">Last updated: July 16, 2026 at 09:13 PM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
+  <p class="updated">Last updated: July 18, 2026 at 09:39 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
 </div>
 
 <script>
@@ -341,46 +341,46 @@ const metadataRiskData = [
 const rawTasks = [
   {id:"assemble_3in1_animals_on_wheels", approved:382, approvedSecs:176236, approvedRecordings:112, pending:18, pendingSecs:40469, rejectedRecordings:60},
   {id:"assemble_3in1_dinosaurs_on_wheels", approved:995, approvedSecs:216100, approvedRecordings:140, pending:7, pendingSecs:19154, rejectedRecordings:26},
-  {id:"assemble_aolew_erector_set", approved:190, approvedSecs:172024, approvedRecordings:90, pending:1, pendingSecs:3953, rejectedRecordings:185},
+  {id:"assemble_aolew_erector_set", approved:191, approvedSecs:172682, approvedRecordings:91, pending:1, pendingSecs:3953, rejectedRecordings:184},
   {id:"assemble_apluses_magnetic_blocks", approved:1591, approvedSecs:206057, approvedRecordings:128, pending:45, pendingSecs:97942, rejectedRecordings:28},
-  {id:"assemble_basytodio_blocks", approved:173, approvedSecs:122553, approvedRecordings:75, pending:2, pendingSecs:3111, rejectedRecordings:77},
-  {id:"assemble_battat_toy_plane", approved:738, approvedSecs:190939, approvedRecordings:126, pending:1, pendingSecs:2216, rejectedRecordings:82},
+  {id:"assemble_basytodio_blocks", approved:188, approvedSecs:130236, approvedRecordings:78, pending:2, pendingSecs:3111, rejectedRecordings:74},
+  {id:"assemble_battat_toy_plane", approved:754, approvedSecs:193033, approvedRecordings:127, pending:1, pendingSecs:2216, rejectedRecordings:81},
   {id:"assemble_bluey_family_house", approved:497, approvedSecs:192652, approvedRecordings:113, pending:11, pendingSecs:30359, rejectedRecordings:38},
-  {id:"assemble_bracelet_kit", approved:355, approvedSecs:210597, approvedRecordings:99, pending:1, pendingSecs:3571, rejectedRecordings:178},
-  {id:"assemble_btoys_oven", approved:1023, approvedSecs:155628, approvedRecordings:115, pending:12, pendingSecs:30510, rejectedRecordings:31},
+  {id:"assemble_bracelet_kit", approved:358, approvedSecs:213667, approvedRecordings:100, pending:1, pendingSecs:3571, rejectedRecordings:177},
+  {id:"assemble_btoys_oven", approved:1040, approvedSecs:158445, approvedRecordings:116, pending:12, pendingSecs:30510, rejectedRecordings:30},
   {id:"assemble_cars_3_mcqueen_kit", approved:713, approvedSecs:143879, approvedRecordings:118, pending:0, pendingSecs:0, rejectedRecordings:30},
   {id:"assemble_coogam_racing_car", approved:788, approvedSecs:195695, approvedRecordings:142, pending:3, pendingSecs:7216, rejectedRecordings:63},
-  {id:"assemble_dekilea_gear_blocks", approved:275, approvedSecs:174355, approvedRecordings:97, pending:0, pendingSecs:0, rejectedRecordings:58},
-  {id:"assemble_design_gears_workshop", approved:1365, approvedSecs:136055, approvedRecordings:116, pending:0, pendingSecs:0, rejectedRecordings:19},
+  {id:"assemble_dekilea_gear_blocks", approved:281, approvedSecs:179799, approvedRecordings:99, pending:0, pendingSecs:0, rejectedRecordings:56},
+  {id:"assemble_design_gears_workshop", approved:1385, approvedSecs:138405, approvedRecordings:117, pending:0, pendingSecs:0, rejectedRecordings:18},
   {id:"assemble_design_robot", approved:1024, approvedSecs:194963, approvedRecordings:159, pending:1, pendingSecs:985, rejectedRecordings:56},
   {id:"assemble_dinosaur_toy", approved:270, approvedSecs:164786, approvedRecordings:109, pending:0, pendingSecs:0, rejectedRecordings:89},
   {id:"assemble_disney_cars_color_changer", approved:639, approvedSecs:107488, approvedRecordings:73, pending:10, pendingSecs:20925, rejectedRecordings:29},
   {id:"assemble_disney_cars_copper_canyon", approved:980, approvedSecs:152165, approvedRecordings:121, pending:14, pendingSecs:36467, rejectedRecordings:34},
   {id:"assemble_fire_truck", approved:1150, approvedSecs:241553, approvedRecordings:146, pending:13, pendingSecs:32453, rejectedRecordings:57},
   {id:"assemble_fyd_jeep", approved:737, approvedSecs:191067, approvedRecordings:129, pending:13, pendingSecs:38534, rejectedRecordings:45},
-  {id:"assemble_gigglescape_construction_set", approved:665, approvedSecs:56509, approvedRecordings:86, pending:2, pendingSecs:7457, rejectedRecordings:26},
-  {id:"assemble_gigglescape_train_set", approved:248, approvedSecs:53451, approvedRecordings:26, pending:0, pendingSecs:0, rejectedRecordings:16},
+  {id:"assemble_gigglescape_construction_set", approved:665, approvedSecs:56509, approvedRecordings:86, pending:10, pendingSecs:28498, rejectedRecordings:26},
+  {id:"assemble_gigglescape_train_set", approved:253, approvedSecs:54766, approvedRecordings:27, pending:5, pendingSecs:15558, rejectedRecordings:16},
   {id:"assemble_hape_drive_car", approved:555, approvedSecs:155126, approvedRecordings:111, pending:5, pendingSecs:15472, rejectedRecordings:36},
-  {id:"assemble_haptime_design_set", approved:225, approvedSecs:169286, approvedRecordings:100, pending:11, pendingSecs:34102, rejectedRecordings:120},
+  {id:"assemble_haptime_design_set", approved:234, approvedSecs:181633, approvedRecordings:104, pending:11, pendingSecs:34102, rejectedRecordings:116},
   {id:"assemble_hot_wheels_car", approved:912, approvedSecs:91105, approvedRecordings:82, pending:9, pendingSecs:13107, rejectedRecordings:25},
   {id:"assemble_iiromeci_gears", approved:335, approvedSecs:128611, approvedRecordings:85, pending:2, pendingSecs:4640, rejectedRecordings:66},
   {id:"assemble_kids_first_robot_factory", approved:229, approvedSecs:125130, approvedRecordings:76, pending:24, pendingSecs:64514, rejectedRecordings:32},
   {id:"assemble_lacchoufee_tool_box_1", approved:819, approvedSecs:253191, approvedRecordings:148, pending:10, pendingSecs:25153, rejectedRecordings:74},
   {id:"assemble_lacchoufee_tool_box_2", approved:612, approvedSecs:165957, approvedRecordings:96, pending:10, pendingSecs:20965, rejectedRecordings:58},
-  {id:"assemble_laugh_learn_coffee_cafe", approved:729, approvedSecs:240776, approvedRecordings:106, pending:0, pendingSecs:0, rejectedRecordings:133},
+  {id:"assemble_laugh_learn_coffee_cafe", approved:746, approvedSecs:247676, approvedRecordings:108, pending:2, pendingSecs:7497, rejectedRecordings:129},
   {id:"assemble_lego_angel_stitch_brick_headz", approved:288, approvedSecs:226990, approvedRecordings:129, pending:3, pendingSecs:7428, rejectedRecordings:114},
   {id:"assemble_lego_duplo_cake", approved:419, approvedSecs:52326, approvedRecordings:172, pending:1, pendingSecs:1736, rejectedRecordings:33},
   {id:"assemble_lego_duplo_garden", approved:1022, approvedSecs:177627, approvedRecordings:119, pending:14, pendingSecs:34488, rejectedRecordings:63},
   {id:"assemble_lego_jet_vs_car", approved:190, approvedSecs:276473, approvedRecordings:123, pending:0, pendingSecs:0, rejectedRecordings:80},
-  {id:"assemble_lego_road_plates", approved:306, approvedSecs:166939, approvedRecordings:101, pending:0, pendingSecs:0, rejectedRecordings:114},
+  {id:"assemble_lego_road_plates", approved:308, approvedSecs:170010, approvedRecordings:103, pending:0, pendingSecs:0, rejectedRecordings:112},
   {id:"assemble_lego_year_of_horse", approved:224, approvedSecs:259546, approvedRecordings:128, pending:1, pendingSecs:1441, rejectedRecordings:115},
   {id:"assemble_lehoo_castle_tool_set", approved:358, approvedSecs:118700, approvedRecordings:80, pending:9, pendingSecs:10370, rejectedRecordings:34},
   {id:"assemble_little_tikes_hammer_nail", approved:626, approvedSecs:160588, approvedRecordings:85, pending:13, pendingSecs:31663, rejectedRecordings:40},
   {id:"assemble_little_tikes_measure_cut", approved:587, approvedSecs:187010, approvedRecordings:93, pending:21, pendingSecs:35965, rejectedRecordings:58},
-  {id:"assemble_little_tikes_power_cuts", approved:170, approvedSecs:14155, approvedRecordings:59, pending:0, pendingSecs:0, rejectedRecordings:16},
+  {id:"assemble_little_tikes_power_cuts", approved:170, approvedSecs:14155, approvedRecordings:59, pending:6, pendingSecs:17834, rejectedRecordings:16},
   {id:"assemble_magna_tiles_puppy_park", approved:922, approvedSecs:191850, approvedRecordings:127, pending:49, pendingSecs:103915, rejectedRecordings:40},
   {id:"assemble_magnetic_train_track", approved:602, approvedSecs:137703, approvedRecordings:104, pending:16, pendingSecs:31624, rejectedRecordings:36},
-  {id:"assemble_marble_run", approved:469, approvedSecs:145362, approvedRecordings:95, pending:0, pendingSecs:0, rejectedRecordings:64},
+  {id:"assemble_marble_run", approved:475, approvedSecs:148002, approvedRecordings:96, pending:0, pendingSecs:0, rejectedRecordings:63},
   {id:"assemble_mega_bloks_big_bag", approved:925, approvedSecs:88397, approvedRecordings:68, pending:8, pendingSecs:13225, rejectedRecordings:35},
   {id:"assemble_melissa_doug_sandwich_counter", approved:1206, approvedSecs:166632, approvedRecordings:128, pending:0, pendingSecs:0, rejectedRecordings:57},
   {id:"assemble_montessori_tool_bench", approved:637, approvedSecs:116653, approvedRecordings:81, pending:9, pendingSecs:15463, rejectedRecordings:29},
@@ -389,7 +389,7 @@ const rawTasks = [
   {id:"assemble_mould_king_v8_model", approved:102, approvedSecs:133723, approvedRecordings:61, pending:13, pendingSecs:35615, rejectedRecordings:178},
   {id:"assemble_nails", approved:626, approvedSecs:75734, approvedRecordings:61, pending:5, pendingSecs:5011, rejectedRecordings:11},
   {id:"assemble_ooze_labs_chemistry", approved:720, approvedSecs:174288, approvedRecordings:131, pending:19, pendingSecs:36900, rejectedRecordings:53},
-  {id:"assemble_play_dinos", approved:276, approvedSecs:169704, approvedRecordings:90, pending:11, pendingSecs:32696, rejectedRecordings:40},
+  {id:"assemble_play_dinos", approved:277, approvedSecs:171142, approvedRecordings:91, pending:11, pendingSecs:32696, rejectedRecordings:39},
   {id:"assemble_pup_go_car", approved:842, approvedSecs:234170, approvedRecordings:143, pending:0, pendingSecs:0, rejectedRecordings:54},
   {id:"assemble_remote_control_gear_bot", approved:820, approvedSecs:232088, approvedRecordings:145, pending:0, pendingSecs:0, rejectedRecordings:48},
   {id:"assemble_retro_car", approved:297, approvedSecs:179937, approvedRecordings:103, pending:18, pendingSecs:31603, rejectedRecordings:74},
@@ -399,7 +399,7 @@ const rawTasks = [
   {id:"assemble_veais_kids_set", approved:390, approvedSecs:159197, approvedRecordings:101, pending:0, pendingSecs:0, rejectedRecordings:67},
   {id:"assemble_vtech_drill_toolbox", approved:738, approvedSecs:158619, approvedRecordings:92, pending:20, pendingSecs:52639, rejectedRecordings:59},
   {id:"assemble_wonder_tiles_city", approved:356, approvedSecs:169753, approvedRecordings:99, pending:1, pendingSecs:3387, rejectedRecordings:50},
-  {id:"assemble_wooden_train_set", approved:178, approvedSecs:100395, approvedRecordings:61, pending:38, pendingSecs:110866, rejectedRecordings:111},
+  {id:"assemble_wooden_train_set", approved:184, approvedSecs:103358, approvedRecordings:62, pending:38, pendingSecs:110866, rejectedRecordings:110},
   {id:"assemble_zozoplay_gear_set", approved:261, approvedSecs:210076, approvedRecordings:114, pending:1, pendingSecs:576, rejectedRecordings:115},
 ];
 
