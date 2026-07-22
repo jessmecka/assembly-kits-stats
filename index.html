@@ -97,7 +97,7 @@
 <body>
 <div class="page">
   <h1>Assembly Kits — QA Dashboard</h1>
-  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Requirement: 100 approved cycles or 20h cycle time per task, whichever is more &nbsp;·&nbsp; Live data as of July 22, 2026 at 03:47 AM CST</p>
+  <p class="subtitle">Studio / MC + CWC / Assembly Kits [EXCLUSIVE] &nbsp;·&nbsp; Requirement: 100 approved cycles or 20h cycle time per task, whichever is more &nbsp;·&nbsp; Live data as of July 22, 2026 at 09:11 AM CST</p>
 
   <p class="methodology"><strong>Methodology (updated):</strong> "Approved" now counts individual good-verdict build <strong>cycles</strong> (one full kit build = one reviewed <code>segmentReviews</code> entry, ≥60s, from the latest review session per recording) — not whole recordings. A single ~45-min recording typically contains 8–11 cycles, so these numbers are much higher than a recording count. Cycles are only counted from recordings whose overall review status is <strong>approved</strong> (good builds inside rejected recordings are excluded — contested pool, not yet spot-checked). "Rejected" and "Rej %" are recording-level QA outcomes. "Pending" is unreviewed recordings awaiting review (no cycle data yet). <strong>Requirement (updated):</strong> each task must deliver <strong>100 approved cycles or 20 hours of approved cycle time, whichever is more</strong> — a task is complete only when it has ≥100 cycles <em>and</em> ≥20h of cycle time. Fast-cycle kits (short builds) therefore need more than 100 cycles to reach the 20h floor. Source: <code>qa_usertask_review_sessions.segmentReviews</code> + <code>user_tasks</code>, mecka-ai MongoDB (Longhua + Toronto).</p>
 
@@ -261,7 +261,7 @@
     </div>
   </div>
 
-  <p class="updated">Last updated: July 22, 2026 at 03:47 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
+  <p class="updated">Last updated: July 22, 2026 at 09:11 AM CST · Source: mecka-ai MongoDB (Longhua + Toronto) · qa_usertask_review_sessions cycle counts</p>
 </div>
 
 <script>
